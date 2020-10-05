@@ -26,7 +26,7 @@ moment_inertia: .04712 # kg m^2 (estimated as a rectangle with width and height 
 update_pose_rate: 0.001
 
 # Lidar simulation parameters
-scan_beams: 36
+scan_beams: 1080
 scan_field_of_view: 6.2831853 #4.71 # radians
 
 
@@ -47,7 +47,7 @@ map_free_threshold: 0.8
 ttc_threshold: 0.01
 
 # Indices for mux controller
-mux_size: 5
+mux_size: 6
 joy_mux_idx: 0
 key_mux_idx: 1
 random_walker_mux_idx: 2
@@ -55,6 +55,7 @@ brake_mux_idx: 3
 nav_mux_idx: 4
 # **Add index for new planning method here**
 # **(increase mux_size accordingly)**
+wall_avoid_mux_idx: 5
 new_method_mux_idx: -1
 
 # Enables joystick if true
@@ -70,6 +71,7 @@ brake_button_idx: 0 # A button
 random_walk_button_idx: 1 # ? button
 nav_button_idx: 5 # RB button
 # **Add button for new planning method here**
+wall_avoid_button_idx: 7
 new_button_idx: -1
 
 # Keyboard characters for toggling mux
@@ -79,6 +81,7 @@ brake_key_char: "b"
 random_walk_key_char: "r"
 nav_key_char: "n"
 # **Add button for new planning method here**
+wall_avoid_char: "m"
 new_key_char: "z"
 
 # Keyboard driving params
@@ -108,6 +111,7 @@ rand_drive_topic: "/rand_drive"
 brake_drive_topic: "/brake"
 nav_drive_topic: "/nav"
 # **Add name for new planning method here**
+wall_avoid_topic: "/wall_avoid"
 new_drive_topic: "/new_drive"
 
 # name of file to write collision log to 

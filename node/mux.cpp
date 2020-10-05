@@ -21,6 +21,7 @@ private:
     // Listen for messages from joystick and keyboard
     ros::Subscriber joy_sub;
     ros::Subscriber key_sub;
+    ros::Subscriber wall_sub;
 
     // Publish drive data to simulator/car
     ros::Publisher drive_pub;
@@ -28,6 +29,7 @@ private:
     // Mux indices
     int joy_mux_idx;
     int key_mux_idx;
+    int avoid_wall_mux_idx;
 
     // Mux controller array
     std::vector<bool> mux_controller;
@@ -72,10 +74,13 @@ public:
         // Start subscribers to listen to joy and keyboard messages
         joy_sub = n.subscribe(joy_topic, 1, &Mux::joy_callback, this);
         key_sub = n.subscribe(key_topic, 1, &Mux::key_callback, this);
+	wall_sub = n.subscribe(wall_avoid_topic, 1, &Mux::wall_avoid_callback, this);
+
 
         // get mux indices
         n.getParam("joy_mux_idx", joy_mux_idx);
         n.getParam("key_mux_idx", key_mux_idx);
+	n.getParam("avoid_wall_mux_idx", avoid_wall_mux_idx);
 
         // get params for joystick calculations
         n.getParam("joy_speed_axis", joy_speed_axis);
@@ -122,6 +127,13 @@ public:
         n.getParam("nav_drive_topic", nav_drive_topic);
         n.getParam("nav_mux_idx", nav_mux_idx);
         add_channel(nav_drive_topic, drive_topic, nav_mux_idx);
+
+	// Wall avoid channel
+        int wall_avoid_mux_idx;
+        std::string wall_avoid_topic;
+        n.getParam("wall_avoid_topic", wall_avoid_topic);
+        n.getParam("wall_avoid_mux_idx", wall_avoid_mux_idx);
+        add_channel(wall_avoid_topic, drive_topic, wall_avoid_mux_idx);
 
         // ***Add a channel for a new planner here**
         // int new_mux_idx;
@@ -194,6 +206,13 @@ public:
 
             publish_to_drive(desired_velocity, desired_steer);
         }
+    }
+
+    void wall_avoid_callback(ackermann_msgs::AckermannDriveStamped msg) {
+	//pegar valores definidos de velocidade e angulo	
+	double desired_steer = msg.drive.steering_angle;
+        double desired_velocity = msg.drive.speed;
+	publish_to_drive(desired_velocity, desired_steer);
     }
 
     void key_callback(const std_msgs::String & msg) {

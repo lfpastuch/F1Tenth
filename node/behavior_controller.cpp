@@ -38,6 +38,7 @@ private:
     int random_walker_mux_idx;
     int nav_mux_idx;
     int brake_mux_idx;
+    int wall_avoid_mux_idx;
     // ***Add mux index for new planner here***
     // int new_mux_idx;
 
@@ -53,6 +54,7 @@ private:
     int nav_button_idx;
     // ***Add button index for new planner here***
     // int new_button_idx;
+    int wall_avoid_button_idx;
 
     // Key indices
     std::string joy_key_char;
@@ -62,6 +64,7 @@ private:
     std::string nav_key_char;
     // ***Add key char for new planner here***
     // int new_key_char;
+    std::string wall_avoid_char;
 
     // Is ebrake on? (not engaged, but on)
     bool safety_on;
@@ -91,7 +94,7 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string scan_topic, odom_topic, imu_topic, joy_topic, keyboard_topic, brake_bool_topic, mux_topic;
+        std::string scan_topic, odom_topic, imu_topic, joy_topic, keyboard_topic, brake_bool_topic, mux_topic, wall_avoid_topic;
         n.getParam("scan_topic", scan_topic);
         n.getParam("odom_topic", odom_topic);
         n.getParam("imu_topic", imu_topic);
@@ -99,6 +102,7 @@ public:
         n.getParam("mux_topic", mux_topic);
         n.getParam("keyboard_topic", keyboard_topic);
         n.getParam("brake_bool_topic", brake_bool_topic);
+	n.getParam("wall_avoid_topic", wall_avoid_topic);
 
         // Make a publisher for mux messages
         mux_pub = n.advertise<std_msgs::Int32MultiArray>(mux_topic, 10);
@@ -118,7 +122,7 @@ public:
         n.getParam("brake_mux_idx", brake_mux_idx);
         n.getParam("nav_mux_idx", nav_mux_idx);
         // ***Add mux index for new planner here***
-        // n.getParam("new_mux_idx", new_mux_idx);
+        n.getParam("wall_avoid_mux_idx", wall_avoid_mux_idx);
 
         // Get button indices
         n.getParam("joy_button_idx", joy_button_idx);
@@ -127,7 +131,7 @@ public:
         n.getParam("brake_button_idx", brake_button_idx);
         n.getParam("nav_button_idx", nav_button_idx);
         // ***Add button index for new planner here***
-        // n.getParam("new_button_idx", new_button_idx);
+        n.getParam("wall_avoid_button_idx", wall_avoid_button_idx);
 
         // Get key indices
         n.getParam("joy_key_char", joy_key_char);
@@ -136,7 +140,7 @@ public:
         n.getParam("brake_key_char", brake_key_char);
         n.getParam("nav_key_char", nav_key_char);
         // ***Add key char for new planner here***
-        // n.getParam("new_key_char", new_key_char);
+        n.getParam("wall_avoid_char", wall_avoid_char);
 
         // Initialize the mux controller 
         n.getParam("mux_size", mux_size);
@@ -312,11 +316,10 @@ public:
             // nav
             toggle_mux(nav_mux_idx, "Navigation");
         }
-        // ***Add new else if statement here for new planning method***
-        // if (msg.buttons[new_button_idx]) {
-        //  // new planner
-        //  toggle_mux(new_mux_idx, "New Planner");
-        // }
+	if (msg.buttons[wall_avoid_button_idx]) { 
+            // keyboard
+            toggle_mux(wall_avoid_mux_idx, "Wall Avoid");
+        }
 
     }
 
@@ -346,10 +349,10 @@ public:
             toggle_mux(nav_mux_idx, "Navigation");
         }
         // ***Add new else if statement here for new planning method***
-        // if (msg.data == new_key_char) {
-        //  // new planner
-        //  toggle_mux(new_mux_idx, "New Planner");
-        // }
+         if (msg.data == wall_avoid_char) {
+          // new planner
+          toggle_mux(wall_avoid_mux_idx, "Wall Avoid");
+        }
 
     }
 
