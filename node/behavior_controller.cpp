@@ -30,7 +30,6 @@ private:
     ros::Subscriber odom_sub;
     ros::Subscriber imu_sub;
     ros::Subscriber brake_bool_sub;
-    ros::Subscriber wall_avoid_sub;
 
     // Publisher for mux controller
     ros::Publisher mux_pub;
@@ -97,7 +96,7 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string scan_topic, odom_topic, imu_topic, joy_topic, keyboard_topic, brake_bool_topic, mux_topic, wall_avoid_topic;
+        std::string scan_topic, odom_topic, imu_topic, joy_topic, keyboard_topic, brake_bool_topic, mux_topic;
         n.getParam("scan_topic", scan_topic);
         n.getParam("odom_topic", odom_topic);
         n.getParam("imu_topic", imu_topic);
@@ -105,7 +104,6 @@ public:
         n.getParam("mux_topic", mux_topic);
         n.getParam("keyboard_topic", keyboard_topic);
         n.getParam("brake_bool_topic", brake_bool_topic);
-	n.getParam("wall_avoid_topic", wall_avoid_topic);
 
         // Make a publisher for mux messages
         mux_pub = n.advertise<std_msgs::Int32MultiArray>(mux_topic, 10);
@@ -117,7 +115,6 @@ public:
         odom_sub = n.subscribe(odom_topic, 1, &BehaviorController::odom_callback, this);
         key_sub = n.subscribe(keyboard_topic, 1, &BehaviorController::key_callback, this);
         brake_bool_sub = n.subscribe(brake_bool_topic, 1, &BehaviorController::brake_callback, this);
-	wall_avoid_sub = n.subscribe(wall_avoid_topic, 1, &BehaviorController::wall_avoid_callback, this);	
 
         // Get mux indices
         n.getParam("joy_mux_idx", joy_mux_idx);
@@ -379,10 +376,6 @@ public:
 
     }
 
-    void wall_avoid_callback(const ackermann_msgs::AckermannDriveStamped & msg){
-	
-    
-    }
 
 };
 

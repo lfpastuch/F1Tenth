@@ -21,7 +21,7 @@ private:
     // Listen for messages from joystick and keyboard
     ros::Subscriber joy_sub;
     ros::Subscriber key_sub;
-    ros::Subscriber wall_sub;
+   
 
     // Publish drive data to simulator/car
     ros::Publisher drive_pub;
@@ -64,7 +64,6 @@ public:
         n.getParam("mux_topic", mux_topic);
         n.getParam("joy_topic", joy_topic);
         n.getParam("keyboard_topic", key_topic);
-        n.getParam("wall_avoid_topic", wall_avoid_topic);
 
 
         // Make a publisher for drive messages
@@ -76,7 +75,6 @@ public:
         // Start subscribers to listen to joy and keyboard messages
         joy_sub = n.subscribe(joy_topic, 1, &Mux::joy_callback, this);
         key_sub = n.subscribe(key_topic, 1, &Mux::key_callback, this);
-	wall_sub = n.subscribe(wall_avoid_topic, 1, &Mux::wall_avoid_callback, this);
 
 
         // get mux indices
@@ -133,7 +131,7 @@ public:
 	// Wall avoid channel
         int wall_avoid_mux_idx;
         //std::string wall_avoid_topic;
-        //n.getParam("wall_avoid_topic", wall_avoid_topic);
+        n.getParam("wall_avoid_topic", wall_avoid_topic);
         n.getParam("wall_avoid_mux_idx", wall_avoid_mux_idx);
         add_channel(wall_avoid_topic, drive_topic, wall_avoid_mux_idx);
 
@@ -210,12 +208,6 @@ public:
         }
     }
 
-    void wall_avoid_callback(const ackermann_msgs::AckermannDriveStamped & msg) {
-	//pegar valores definidos de velocidade e angulo	
-	double desired_steer = msg.drive.steering_angle;
-        double desired_velocity = msg.drive.speed;
-	publish_to_drive(desired_velocity, desired_steer);
-    }
 
     void key_callback(const std_msgs::String & msg) {
         // make drive message from keyboard if turned on 

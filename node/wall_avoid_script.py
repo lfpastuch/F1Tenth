@@ -26,11 +26,11 @@ def callback(msg):
 	if msg.ranges[indice_45graus] < 0.5:		
 		wall_avoid_msg.drive.steering_angle = 0.5
 		drive_pub.publish(wall_avoid_msg)
-		print "obstaculo a esquerda"
+		# print "obstaculo a esquerda"
 	elif msg.ranges[indice_135graus] < 0.5:
 		wall_avoid_msg.drive.steering_angle = -0.5
 		drive_pub.publish(wall_avoid_msg)
-		print "obstaculo a direita"
+		# print "obstaculo a direita"
 
 
 class WallAvoid(object):
