@@ -1,6 +1,8 @@
 #include <ros/ros.h>
 #include <ros/package.h>
 
+#include <ackermann_msgs/AckermannDriveStamped.h>
+#include <ackermann_msgs/AckermannDrive.h>
 #include <std_msgs/Int32MultiArray.h>
 #include <std_msgs/Bool.h>
 #include <sensor_msgs/Joy.h>
@@ -377,7 +379,7 @@ public:
 
     }
 
-    void wall_avoid_callback(const sensor_msgs::LaserScan & msg){
+    void wall_avoid_callback(const ackermann_msgs::AckermannDriveStamped & msg){
 	
     
     }

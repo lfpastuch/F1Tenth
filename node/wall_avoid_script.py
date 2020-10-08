@@ -9,7 +9,7 @@ from sensor_msgs.msg import LaserScan
 # Essa funcao eh chamada toda vez que um evento do topico /scan eh publicado
 def callback(msg):
 
-	# Dentro de msg, existem varios atributos. O mais importante eh o atributo range, que eh um 		array que contem a leitura dos feixes do sensor LIDAR. Como o atributo possui 1080 valores e o 		alcance do sensor cobre um area de 180 graus ao redor do sensor, sabemos que o valor 0 graus do 	sensor eh equivalente ao primeiro item do array mas.range[0] e, consequentemente, o ultimo 		valor do array equivale ao angulo de 180 graus.
+	# Dentro de msg, existem varios atributos. O mais importante eh o atributo range, que eh um array que contem a leitura dos feixes do sensor LIDAR. Como o atributo possui 1080 valores e o 		alcance do sensor cobre um area de 180 graus ao redor do sensor, sabemos que o valor 0 graus do sensor eh equivalente ao primeiro item do array mas.range[0] e, consequentemente, o ultimo 		valor do array equivale ao angulo de 180 graus.
 
 	# Aqui eh calculado qual eh o item do vetor que informa a leitura do angulo 45 e 135 graus.	
 	indice_45graus = 45*1080/180
@@ -59,6 +59,6 @@ def main():
 	rospy.spin()
 
 # O drive_pub foi declarado global para que ele possa ser usado tando no construtor quanto na funcao. callback
-drive_pub = rospy.Publisher('/drive', AckermannDriveStamped, queue_size=10)
+drive_pub = rospy.Publisher('/wall_avoid', AckermannDriveStamped, queue_size=10)
 
 main()

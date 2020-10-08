@@ -210,7 +210,7 @@ public:
         }
     }
 
-    void wall_avoid_callback(ackermann_msgs::AckermannDriveStamped msg) {
+    void wall_avoid_callback(const ackermann_msgs::AckermannDriveStamped & msg) {
 	//pegar valores definidos de velocidade e angulo	
 	double desired_steer = msg.drive.steering_angle;
         double desired_velocity = msg.drive.speed;
