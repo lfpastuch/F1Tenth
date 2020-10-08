@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import rospy
 
+#tamo up to date!
+
 # AckermannDriveStamped eh o tipo de mensgem que eh enviada para o simulador para fazer ele se locomover
 from ackermann_msgs.msg import AckermannDriveStamped
 # LaserScan eh o tipo de mensagem enviada pelo simulador que contem as informacoes do LIDAR
