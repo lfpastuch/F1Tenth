@@ -28,6 +28,7 @@ private:
     ros::Subscriber odom_sub;
     ros::Subscriber imu_sub;
     ros::Subscriber brake_bool_sub;
+    ros::Subscriber wall_avoid_sub;
 
     // Publisher for mux controller
     ros::Publisher mux_pub;
@@ -114,6 +115,7 @@ public:
         odom_sub = n.subscribe(odom_topic, 1, &BehaviorController::odom_callback, this);
         key_sub = n.subscribe(keyboard_topic, 1, &BehaviorController::key_callback, this);
         brake_bool_sub = n.subscribe(brake_bool_topic, 1, &BehaviorController::brake_callback, this);
+	wall_avoid_sub = n.subscribe(wall_avoid_topic, 1, &BehaviorController::wall_avoid_callback, this);	
 
         // Get mux indices
         n.getParam("joy_mux_idx", joy_mux_idx);
@@ -375,6 +377,10 @@ public:
 
     }
 
+    void wall_avoid_callback(const sensor_msgs::LaserScan & msg){
+	
+    
+    }
 
 };
 

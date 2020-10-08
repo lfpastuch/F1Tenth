@@ -59,11 +59,13 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string drive_topic, mux_topic, joy_topic, key_topic;
+        std::string drive_topic, mux_topic, joy_topic, key_topic, wall_avoid_topic;
         n.getParam("drive_topic", drive_topic);
         n.getParam("mux_topic", mux_topic);
         n.getParam("joy_topic", joy_topic);
         n.getParam("keyboard_topic", key_topic);
+        n.getParam("wall_avoid_topic", wall_avoid_topic);
+
 
         // Make a publisher for drive messages
         drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 10);
@@ -130,8 +132,8 @@ public:
 
 	// Wall avoid channel
         int wall_avoid_mux_idx;
-        std::string wall_avoid_topic;
-        n.getParam("wall_avoid_topic", wall_avoid_topic);
+        //std::string wall_avoid_topic;
+        //n.getParam("wall_avoid_topic", wall_avoid_topic);
         n.getParam("wall_avoid_mux_idx", wall_avoid_mux_idx);
         add_channel(wall_avoid_topic, drive_topic, wall_avoid_mux_idx);
 
