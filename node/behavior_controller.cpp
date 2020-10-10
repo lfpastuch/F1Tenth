@@ -41,6 +41,7 @@ private:
     int nav_mux_idx;
     int brake_mux_idx;
     int wall_avoid_mux_idx;
+    int follow_the_wall_mux_idx;
     // ***Add mux index for new planner here***
     // int new_mux_idx;
 
@@ -57,6 +58,7 @@ private:
     // ***Add button index for new planner here***
     // int new_button_idx;
     int wall_avoid_button_idx;
+    int follow_the_wall_button_idx;
 
     // Key indices
     std::string joy_key_char;
@@ -67,6 +69,7 @@ private:
     // ***Add key char for new planner here***
     // int new_key_char;
     std::string wall_avoid_char;
+    std::string follow_the_wall_char;
 
     // Is ebrake on? (not engaged, but on)
     bool safety_on;
@@ -124,6 +127,7 @@ public:
         n.getParam("nav_mux_idx", nav_mux_idx);
         // ***Add mux index for new planner here***
         n.getParam("wall_avoid_mux_idx", wall_avoid_mux_idx);
+        n.getParam("follow_the_wall_mux_idx", follow_the_wall_mux_idx);
 
         // Get button indices
         n.getParam("joy_button_idx", joy_button_idx);
@@ -133,6 +137,7 @@ public:
         n.getParam("nav_button_idx", nav_button_idx);
         // ***Add button index for new planner here***
         n.getParam("wall_avoid_button_idx", wall_avoid_button_idx);
+        n.getParam("follow_the_wall_button_idx", follow_the_wall_button_idx);
 
         // Get key indices
         n.getParam("joy_key_char", joy_key_char);
@@ -142,6 +147,7 @@ public:
         n.getParam("nav_key_char", nav_key_char);
         // ***Add key char for new planner here***
         n.getParam("wall_avoid_char", wall_avoid_char);
+        n.getParam("follow_the_wall_char", follow_the_wall_char);
 
         // Initialize the mux controller 
         n.getParam("mux_size", mux_size);
@@ -348,11 +354,12 @@ public:
         } else if (msg.data == nav_key_char) {
             // nav
             toggle_mux(nav_mux_idx, "Navigation");
-        }
-        // ***Add new else if statement here for new planning method***
-         if (msg.data == wall_avoid_char) {
+        }else if (msg.data == wall_avoid_char) {
           // new planner
           toggle_mux(wall_avoid_mux_idx, "Wall Avoid");
+        }else if (msg.data == follow_the_wall_char) {
+          // new planner
+          toggle_mux(follow_the_wall_mux_idx, "Follow the Wall");
         }
 
     }

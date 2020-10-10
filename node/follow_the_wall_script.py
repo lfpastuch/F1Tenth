@@ -16,20 +16,24 @@ def callback(msg):
 	a = msg.ranges[indice_45graus]
 	theta = 45
 
-	alpha = math.atan((a*math.cos(theta)-b)/(a*math.sin(theta))
-	AB = b*math.cos(alpha)
-	# AC é a distância que o carro eh projetado
-	AC = 0.5
-	CD = AB + AC*math.sin(alpha)
+	#alpha = math.atan((a*math.cos(theta)-b)/(a*math.sin(theta))
+	#AB = b*math.cos(alpha)
+	# AC eh a distancia que o carro eh projetado
+	#AC = 0.5
+	#CD = AB + AC*math.sin(alpha)
 
-	Kp = 1
-	Kd = 1
+	#Kp = 1
+	#Kd = 1
 	
-	set_point = 5
+	#set_point = 5
 
-	erro = set_pint - CD
+	#erro_atual = set_pint - CD
 
-	#É NECESSÁRIO VER OS LIMITES DO STEERING_ANGLE E DA VELOCIDADE PARA AJUSTAR O CONTROLADOR
+	#acao_de_controle = Kp*erro+Kd*(erro_atual - erro_anterior)
+	#print (acao_de_controle)
+	# max_speed: 7. #  meters/second
+	# max_steering_angle: 0.4189 # radians / 24 degree
+	#EH NECESSaRIO VER OS LIMITES DO STEERING_ANGLE E DA VELOCIDADE PARA AJUSTAR O CONTROLADOR
 
 	global drive_pub
 
@@ -50,17 +54,19 @@ class WallAvoid(object):
 		drive_msg = AckermannDriveStamped()
 		drive_msg.drive.steering_angle = 0
 		drive_msg.drive.speed = 1
-
+		print("bolota")
 		rate = rospy.Rate(10)
 		while not rospy.is_shutdown():
 			global drive_pub
 			drive_pub.publish(drive_msg)
 			rate.sleep()
+			#print("bolota")
 def main():
 	rospy.init_node('follow_the_wall_node')
 	wa = WallAvoid()
 	rospy.spin()
 
+erro_anterior = 0
 # O drive_pub foi declarado global para que ele possa ser usado tando no construtor quanto na funcao. callback
 drive_pub = rospy.Publisher('/follow_the_wall', AckermannDriveStamped, queue_size=10)
 

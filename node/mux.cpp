@@ -59,7 +59,7 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string drive_topic, mux_topic, joy_topic, key_topic, wall_avoid_topic;
+        std::string drive_topic, mux_topic, joy_topic, key_topic;
         n.getParam("drive_topic", drive_topic);
         n.getParam("mux_topic", mux_topic);
         n.getParam("joy_topic", joy_topic);
@@ -80,7 +80,6 @@ public:
         // get mux indices
         n.getParam("joy_mux_idx", joy_mux_idx);
         n.getParam("key_mux_idx", key_mux_idx);
-	n.getParam("avoid_wall_mux_idx", avoid_wall_mux_idx);
 
         // get params for joystick calculations
         n.getParam("joy_speed_axis", joy_speed_axis);
@@ -130,10 +129,17 @@ public:
 
 	// Wall avoid channel
         int wall_avoid_mux_idx;
-        //std::string wall_avoid_topic;
+        std::string wall_avoid_topic;
         n.getParam("wall_avoid_topic", wall_avoid_topic);
         n.getParam("wall_avoid_mux_idx", wall_avoid_mux_idx);
         add_channel(wall_avoid_topic, drive_topic, wall_avoid_mux_idx);
+
+	// Follow the wall Channel
+	int follow_the_wall_mux_idx;
+        std::string follow_the_wall_topic;
+        n.getParam("follow_the_wall_topic", follow_the_wall_topic);
+        n.getParam("follow_the_wall_mux_idx", follow_the_wall_mux_idx);
+        add_channel(follow_the_wall_topic, drive_topic, follow_the_wall_mux_idx);
 
         // ***Add a channel for a new planner here**
         // int new_mux_idx;
