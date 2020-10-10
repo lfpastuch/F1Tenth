@@ -21,7 +21,7 @@ private:
     // Listen for messages from joystick and keyboard
     ros::Subscriber joy_sub;
     ros::Subscriber key_sub;
-   
+
 
     // Publish drive data to simulator/car
     ros::Publisher drive_pub;
@@ -29,7 +29,7 @@ private:
     // Mux indices
     int joy_mux_idx;
     int key_mux_idx;
-    int avoid_wall_mux_idx;
+    int aeb_mux_idx;
 
     // Mux controller array
     std::vector<bool> mux_controller;
@@ -59,7 +59,7 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string drive_topic, mux_topic, joy_topic, key_topic, wall_avoid_topic;
+        std::string drive_topic, mux_topic, joy_topic, key_topic, aeb_topic;
         n.getParam("drive_topic", drive_topic);
         n.getParam("mux_topic", mux_topic);
         n.getParam("joy_topic", joy_topic);
@@ -80,7 +80,7 @@ public:
         // get mux indices
         n.getParam("joy_mux_idx", joy_mux_idx);
         n.getParam("key_mux_idx", key_mux_idx);
-	n.getParam("avoid_wall_mux_idx", avoid_wall_mux_idx);
+	      n.getParam("aeb_mux_idx", aeb_mux_idx);
 
         // get params for joystick calculations
         n.getParam("joy_speed_axis", joy_speed_axis);
@@ -128,12 +128,12 @@ public:
         n.getParam("nav_mux_idx", nav_mux_idx);
         add_channel(nav_drive_topic, drive_topic, nav_mux_idx);
 
-	// Wall avoid channel
-        int wall_avoid_mux_idx;
-        //std::string wall_avoid_topic;
-        n.getParam("wall_avoid_topic", wall_avoid_topic);
-        n.getParam("wall_avoid_mux_idx", wall_avoid_mux_idx);
-        add_channel(wall_avoid_topic, drive_topic, wall_avoid_mux_idx);
+	// aeb channel
+        int aeb_mux_idx;
+        //std::string aeb_topic;
+        n.getParam("aeb_topic", aeb_topic);
+        n.getParam("aeb_mux_idx", aeb_mux_idx);
+        add_channel(aeb_topic, drive_topic, aeb_mux_idx);
 
         // ***Add a channel for a new planner here**
         // int new_mux_idx;
@@ -145,11 +145,11 @@ public:
 
     void add_channel(std::string channel_name, std::string drive_topic, int mux_idx_) {
         Channel* new_channel = new Channel(channel_name, drive_topic, mux_idx_, this);
-        channels.push_back(new_channel);    
+        channels.push_back(new_channel);
     }
 
     void publish_to_drive(double desired_velocity, double desired_steer) {
-        // This will take in a desired velocity and steering angle and make and publish an 
+        // This will take in a desired velocity and steering angle and make and publish an
         // AckermannDriveStamped message to the /drive topic
 
         // Make and publish message
@@ -210,12 +210,12 @@ public:
 
 
     void key_callback(const std_msgs::String & msg) {
-        // make drive message from keyboard if turned on 
+        // make drive message from keyboard if turned on
         if (mux_controller[key_mux_idx]) {
             // Determine desired velocity and steering angle
             double desired_velocity = 0.0;
             double desired_steer = 0.0;
-            
+
             bool publish = true;
 
             if (msg.data == "w") {
@@ -257,7 +257,7 @@ Channel::Channel() {
     Channel("", "", -1, nullptr);
 }
 
-Channel::Channel(std::string channel_name, std::string drive_topic, int mux_idx_, Mux* mux) 
+Channel::Channel(std::string channel_name, std::string drive_topic, int mux_idx_, Mux* mux)
 : mux_idx(mux_idx_), mp_mux(mux) {
     drive_pub = mux->n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 10);
     channel_sub = mux->n.subscribe(channel_name, 1, &Channel::drive_callback, this);

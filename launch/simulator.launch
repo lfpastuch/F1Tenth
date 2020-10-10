@@ -36,7 +36,7 @@
   </node>
 
   <!-- Launch the Wall Avoid Node -->
-  <node pkg="f1tenth_simulator" name="wall_avoid_node" type="wall_avoid_script.py" output="screen">
+  <node pkg="f1tenth_simulator" name="aeb_node" type="aeb.py" output="screen">
     <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
   </node>
 
@@ -46,7 +46,7 @@
           <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
   	 </node>    -->
 
-  
+
   <!-- Launch RVIZ -->
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find f1tenth_simulator)/launch/simulator.rviz" output="screen"/>
 </launch>
