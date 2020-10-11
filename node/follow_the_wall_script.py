@@ -58,27 +58,43 @@ def callback(msg):
 	global erro_anterior
 
 	acao_de_controle = Kp*erro_atual+Kd*(erro_atual - erro_anterior)
-	
-	# Vai existir um controle de velocidade que vai ver o quanto de espaco que ele tem pra frente e vai acelerar a partir disso
 
 	wall_avoid_msg = AckermannDriveStamped()
 	
 	#wall_avoid_msg.drive.speed = -7/10*erro_atual+5
 
+	# Controle proporcional de velocidade
 	if(msg.ranges[indice_180graus] > 15):	
 		wall_avoid_msg.drive.speed = 7
 	else:
-		wall_avoid_msg.drive.speed = 0.7*msg.ranges[indice_180graus]
+		wall_avoid_msg.drive.speed = 0.5*msg.ranges[indice_180graus]
 
 	global drive_pub
 
-	wall_avoid_msg.drive.steering_angle = -acao_de_controle
-	#if(msg.ranges[indice_180graus] > msg.ranges[indice_90graus] and msg.ranges[indice_180graus] > msg.ranges[indice_270graus]):		
-	#	wall_avoid_msg.drive.steering_angle = acao_de_controle
-	#elif(msg.ranges[indice_180graus] < msg.ranges[indice_90graus]):
-	#	wall_avoid_msg.drive.steering_angle = -0.3
-	#elif(msg.ranges[indice_180graus] < msg.ranges[indice_180graus]):
-	#	wall_avoid_msg.drive.steering_angle = 0.3
+	#wall_avoid_msg.drive.steering_angle = -acao_de_controle
+
+	## Acao de controle ON-OFF para curvas muito fechadas
+	
+	indice_255graus = 255*1080/360
+	indice_105graus = 105*1080/360
+
+	distancia_255graus = msg.ranges[indice_255graus]
+	distancia_105graus = msg.ranges[indice_105graus]
+	distancia_180graus = msg.ranges[indice_180graus]
+			
+		
+	if(distancia_180graus < distancia_255graus or distancia_180graus < distancia_105graus):
+
+		acao_on_off = 0.1*(distancia_255graus - distancia_105graus)
+		if(acao_on_off > 0.4):
+			wall_avoid_msg.drive.steering_angle = 0.4 
+		elif(acao_on_off < -0.4):
+			wall_avoid_msg.drive.steering_angle = -0.4 
+		else:
+			wall_avoid_msg.drive.steering_angle = acao_on_off
+		print acao_on_off
+	else:
+		wall_avoid_msg.drive.steering_angle = -acao_de_controle
 
 	drive_pub.publish(wall_avoid_msg)
 
@@ -86,13 +102,6 @@ def callback(msg):
 	# max_steering_angle: 0.4189 # radians / 24 degree
 	#EH NECESSaRIO VER OS LIMITES DO STEERING_ANGLE E DA VELOCIDADE PARA AJUSTAR O CONTROLADOR
 	erro_anterior = erro_atual
-	
-
-	
-
-	#if msg.ranges[indice_45graus] < 0.5:		
-		#wall_avoid_msg.drive.steering_angle = 0.5
-		#drive_pub.publish(wall_avoid_msg)
 
 
 class WallAvoid(object):
