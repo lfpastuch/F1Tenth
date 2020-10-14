@@ -13,19 +13,19 @@ def CheckTTC(msg):
 
 		indice_90graus = 90*1080/180
 
-		DistX = msg.ranges[indice_90graus]
-		TimeStamp = GetTimeStamp(msg)
+		DistX = round(msg.ranges[indice_90graus],4)
+		TimeStamp = round(GetTimeStamp(msg),3)
 
-		VelX = (DistX - CheckTTC.DistX_LastMsg)/(TimeStamp - CheckTTC.TimeStamp_LastMsg)
+		VelX = round((DistX - CheckTTC.DistX_LastMsg)/(TimeStamp - CheckTTC.TimeStamp_LastMsg),4)
 
-		if NotTriggered:
-
-			print "DistX: " + str(DistX) + " DistX_LM: " + str(CheckTTC.DistX_LastMsg)
-			print "dx: " + str(DistX - CheckTTC.DistX_LastMsg)
-			print "TS: " + str(TimeStamp) + " TS_LM: " + str(CheckTTC.TimeStamp_LastMsg)
-			print "dt: " + str(TimeStamp - CheckTTC.TimeStamp_LastMsg)
-			print "VelX: " + str(VelX)
-			print "TTC: " + str(CheckTTC.TTC)
+		# if NotTriggered:
+		#
+		# 	print "DistX: " + str(DistX) + " DistX_LM: " + str(CheckTTC.DistX_LastMsg)
+		# 	print "dx: " + str(DistX - CheckTTC.DistX_LastMsg)
+		# 	print "TS: " + str(TimeStamp) + " TS_LM: " + str(CheckTTC.TimeStamp_LastMsg)
+		# 	print "dt: " + str(TimeStamp - CheckTTC.TimeStamp_LastMsg)
+		# 	print "VelX: " + str(VelX)
+		# 	print "TTC: " + str(CheckTTC.TTC)
 
 		CheckTTC.TimeStamp_LastMsg = TimeStamp
 		CheckTTC.DistX_LastMsg = DistX
@@ -51,7 +51,7 @@ def CheckTTC(msg):
 CheckTTC.TimeStamp_LastMsg = 0;
 CheckTTC.DistX_LastMsg = 0;
 CheckTTC.Count = 0;
-CheckTTC.TTCmin = 1;
+CheckTTC.TTCmin = 3;
 CheckTTC.TTC = 1e3;
 
 NotTriggered = True
@@ -74,7 +74,7 @@ class aeb_system(object):
 		if NotTriggered:
 			drive_msg = AckermannDriveStamped()
 			drive_msg.drive.steering_angle = 0
-			drive_msg.drive.speed = 0.5
+			drive_msg.drive.speed = 0.3
 
 		# Aqui eh feito um loop constante que envia o carro sempre para frente
 		rate = rospy.Rate(10)

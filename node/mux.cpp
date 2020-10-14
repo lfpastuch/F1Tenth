@@ -30,6 +30,8 @@ private:
     int joy_mux_idx;
     int key_mux_idx;
     int aeb_mux_idx;
+    int go_fast_mux_idx;
+    int go_slow_mux_idx;
 
     // Mux controller array
     std::vector<bool> mux_controller;
@@ -59,7 +61,7 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string drive_topic, mux_topic, joy_topic, key_topic, aeb_topic;
+        std::string drive_topic, mux_topic, joy_topic, key_topic, aeb_topic, go_fast_topic, go_slow_topic;
         n.getParam("drive_topic", drive_topic);
         n.getParam("mux_topic", mux_topic);
         n.getParam("joy_topic", joy_topic);
@@ -81,6 +83,8 @@ public:
         n.getParam("joy_mux_idx", joy_mux_idx);
         n.getParam("key_mux_idx", key_mux_idx);
 	      n.getParam("aeb_mux_idx", aeb_mux_idx);
+        n.getParam("go_fast_mux_idx", go_fast_mux_idx);
+        n.getParam("go_slow_mux_idx", go_slow_mux_idx);
 
         // get params for joystick calculations
         n.getParam("joy_speed_axis", joy_speed_axis);
@@ -128,12 +132,24 @@ public:
         n.getParam("nav_mux_idx", nav_mux_idx);
         add_channel(nav_drive_topic, drive_topic, nav_mux_idx);
 
-	// aeb channel
+	      // aeb channel
         int aeb_mux_idx;
         //std::string aeb_topic;
         n.getParam("aeb_topic", aeb_topic);
         n.getParam("aeb_mux_idx", aeb_mux_idx);
         add_channel(aeb_topic, drive_topic, aeb_mux_idx);
+
+        int go_fast_mux_idx;
+        //std::string aeb_topic;
+        n.getParam("go_fast_topic", go_fast_topic);
+        n.getParam("go_fast_mux_idx", go_fast_mux_idx);
+        add_channel(go_fast_topic, drive_topic, go_fast_mux_idx);
+
+        int go_slow_mux_idx;
+        //std::string aeb_topic;
+        n.getParam("go_slow_topic", go_slow_topic);
+        n.getParam("go_slow_mux_idx", go_slow_mux_idx);
+        add_channel(go_slow_topic, drive_topic, go_slow_mux_idx);
 
         // ***Add a channel for a new planner here**
         // int new_mux_idx;

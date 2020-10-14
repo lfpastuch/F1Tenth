@@ -11,6 +11,9 @@
 #include <sensor_msgs/Imu.h>
 #include <std_msgs/String.h>
 
+#include <string>
+using namespace std;
+
 #include <fstream>
 
 #include "f1tenth_simulator/car_state.hpp"
@@ -41,6 +44,8 @@ private:
     int nav_mux_idx;
     int brake_mux_idx;
     int aeb_mux_idx;
+    int go_fast_mux_idx;
+    int go_slow_mux_idx;
     // ***Add mux index for new planner here***
     // int new_mux_idx;
 
@@ -57,6 +62,8 @@ private:
     // ***Add button index for new planner here***
     // int new_button_idx;
     int aeb_button_idx;
+    int go_fast_button_idx;
+    int go_slow_button_idx;
 
     // Key indices
     std::string joy_key_char;
@@ -67,9 +74,13 @@ private:
     // ***Add key char for new planner here***
     // int new_key_char;
     std::string aeb_char;
+    std::string go_fast_char;
+    std::string go_slow_char;
 
     // Is ebrake on? (not engaged, but on)
     bool safety_on;
+
+    bool collided = false;
 
     // To roughly keep track of vehicle state
     racecar_simulator::CarState state;
@@ -124,6 +135,8 @@ public:
         n.getParam("nav_mux_idx", nav_mux_idx);
         // ***Add mux index for new planner here***
         n.getParam("aeb_mux_idx", aeb_mux_idx);
+        n.getParam("go_fast_mux_idx", go_fast_mux_idx);
+        n.getParam("go_slow_mux_idx", go_slow_mux_idx);
 
         // Get button indices
         n.getParam("joy_button_idx", joy_button_idx);
@@ -133,6 +146,8 @@ public:
         n.getParam("nav_button_idx", nav_button_idx);
         // ***Add button index for new planner here***
         n.getParam("aeb_button_idx", aeb_button_idx);
+        n.getParam("go_fast_button_idx", go_fast_button_idx);
+        n.getParam("go_slow_button_idx", go_slow_button_idx);
 
         // Get key indices
         n.getParam("joy_key_char", joy_key_char);
@@ -142,6 +157,8 @@ public:
         n.getParam("nav_key_char", nav_key_char);
         // ***Add key char for new planner here***
         n.getParam("aeb_char", aeb_char);
+        n.getParam("go_fast_char", go_fast_char);
+        n.getParam("go_slow_char", go_slow_char);
 
         // Initialize the mux controller
         n.getParam("mux_size", mux_size);
@@ -243,6 +260,7 @@ public:
         // This function will turn off ebrake, clear the mux and publish it
 
         safety_on = false;
+        collided = true;
 
         // turn everything off
         for (int i = 0; i < mux_size; i++) {
@@ -317,9 +335,17 @@ public:
             // nav
             toggle_mux(nav_mux_idx, "Navigation");
         }
-	if (msg.buttons[aeb_button_idx]) {
+	      if (msg.buttons[aeb_button_idx]) {
             // keyboard
             toggle_mux(aeb_mux_idx, "Autonomous Emergency Braking");
+        }
+        if (msg.buttons[go_fast_button_idx]) {
+            // keyboard
+            toggle_mux(go_fast_mux_idx, "Go Fast");
+        }
+        if (msg.buttons[go_slow_button_idx]) {
+            // keyboard
+            toggle_mux(go_slow_button_idx, "Go Slow");
         }
 
     }
@@ -350,17 +376,45 @@ public:
             toggle_mux(nav_mux_idx, "Navigation");
         }
         // ***Add new else if statement here for new planning method***
-         if (msg.data == aeb_char) {
+        if (msg.data == aeb_char) {
           // new planner
           toggle_mux(aeb_mux_idx, "Autonomous Emergency Braking");
+        }
+        if (msg.data == go_fast_char) {
+          // new planner
+          toggle_mux(go_fast_mux_idx, "Go Fast");
+        }
+        if (msg.data == go_slow_char) {
+          // new planner
+          toggle_mux(go_slow_mux_idx, "Go Slow");
         }
 
     }
 
     void laser_callback(const sensor_msgs::LaserScan & msg) {
+
         // check for a collision
         collision_checker(msg);
 
+        if (!collided){
+
+          int indice_90graus = 90*1080/180;
+
+        	double DistX = msg.ranges[indice_90graus];
+
+          if (DistX > 5.5 && DistX < 10 && !mux_controller[go_slow_mux_idx]){
+            toggle_mux(go_slow_mux_idx, "Go Slow");
+          }
+          else if (DistX > 10.5 && !mux_controller[go_fast_mux_idx]){
+            toggle_mux(go_fast_mux_idx, "Go Fast");
+          }
+          else if (DistX > 0 && DistX < 5 && !mux_controller[aeb_mux_idx]){
+            toggle_mux(aeb_mux_idx, "AEB system");
+          }
+
+          // ROS_INFO_STREAM(to_string(DistX));
+
+        }
 
     }
 

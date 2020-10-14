@@ -36,7 +36,7 @@ scan_distance_to_base_link: 0.275 # meters
 
 # The standard deviation of the noise applied
 # to the lidar simulation
-scan_std_dev: 0 #.01 # meters
+scan_std_dev: 0.01 # meters
 
 # The probability threshold for points
 # in the occupancy grid to be considered "free".
@@ -47,7 +47,7 @@ map_free_threshold: 0.8
 ttc_threshold: 0.01
 
 # Indices for mux controller
-mux_size: 6
+mux_size: 8
 joy_mux_idx: 0
 key_mux_idx: 1
 random_walker_mux_idx: 2
@@ -56,6 +56,8 @@ nav_mux_idx: 4
 # **Add index for new planning method here**
 # **(increase mux_size accordingly)**
 aeb_mux_idx: 5
+go_fast_mux_idx: 6
+go_slow_mux_idx: 7
 new_method_mux_idx: -1
 
 # Enables joystick if true
@@ -72,6 +74,8 @@ random_walk_button_idx: 1 # ? button
 nav_button_idx: 5 # RB button
 # **Add button for new planning method here**
 aeb_button_idx: 7
+go_fast_button_idx: 8
+go_slow_button_idx: 9
 new_button_idx: -1
 
 # Keyboard characters for toggling mux
@@ -82,6 +86,8 @@ random_walk_key_char: "r"
 nav_key_char: "n"
 # **Add button for new planning method here**
 aeb_char: "m"
+go_fast_char: "u"
+go_slow_char: "i"
 new_key_char: "z"
 
 # Keyboard driving params
@@ -112,6 +118,8 @@ brake_drive_topic: "/brake"
 nav_drive_topic: "/nav"
 # **Add name for new planning method here**
 aeb_topic: "/aeb_sys"
+go_fast_topic: "/go_fast"
+go_slow_topic: "/go_slow"
 new_drive_topic: "/new_drive"
 
 # name of file to write collision log to
