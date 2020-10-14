@@ -433,7 +433,7 @@ public:
             // }
 
             // if (dist_min_existe && !mux_controller[go_slow_mux_idx]){
-            //     ROS_INFO_STREAM("Dist: " + to_string(distancia) + "Ang:" + to_string(ang));
+            //   ROS_INFO_STREAM("Dist: " + to_string(distancia) + "Ang:" + to_string(ang));
             //     toggle_mux(go_slow_mux_idx, "Go Slow");
             // }
             // else if (!dist_min_existe && !mux_controller[go_fast_mux_idx]){
