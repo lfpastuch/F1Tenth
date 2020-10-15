@@ -14,14 +14,14 @@ def callback(msg):
 	# Alem disso, o LIDAR retorna o seu valor em metros 1:1 com a 'realidade'
 
 	# Como nao sabemos a largura da pista, vai ser feito um algoritmo para medir o meio da pista
-	# Vamos considerar a parede da esquerda para o algoritmo 
+	# Vamos considerar a parede da esquerda para o algoritmo
 	indice_90graus = 90*1080/360
 	indice_135graus = 135*1080/360
 	indice_180graus = 180*1080/360
 	indice_235graus = 235*1080/360
 	indice_270graus = 270*1080/360
 
-	
+
 	# para o carro ficar no meio o set point sera calculado a cada iteracao
 	distancia_direita = msg.ranges[indice_90graus]
 	distancia_esquerda = msg.ranges[indice_270graus]
@@ -48,11 +48,11 @@ def callback(msg):
 
 	#CD2 = AB2 + AC*math.sin(alpha2)
 
-	#print(AB)	
+	#print(AB)
 
 	Kp = 2
 	Kd = 1
-	
+
 	#erro_atual = set_point - (CD+CD2)/2
 	erro_atual = set_point - CD
 	global erro_anterior
@@ -60,13 +60,13 @@ def callback(msg):
 	acao_de_controle = Kp*erro_atual+Kd*(erro_atual - erro_anterior)
 
 	wall_avoid_msg = AckermannDriveStamped()
-	
+
 	#wall_avoid_msg.drive.speed = -7/10*erro_atual+5
 
 	# Controle proporcional de velocidade
 
 	#wall_avoid_msg.drive.speed = -2/4*erro_atual+2+0.05*msg.ranges[indice_180graus]
-	if(msg.ranges[indice_180graus] > 15):	
+	if(msg.ranges[indice_180graus] > 15):
 		wall_avoid_msg.drive.speed = 7
 	else:
 		wall_avoid_msg.drive.speed = 0.5*msg.ranges[indice_180graus]
@@ -76,15 +76,15 @@ def callback(msg):
 	#wall_avoid_msg.drive.steering_angle = -acao_de_controle
 
 	## Acao de controle ON-OFF para curvas muito fechadas
-	
+
 	indice_255graus = 255*1080/360
 	indice_105graus = 105*1080/360
 
 	distancia_255graus = msg.ranges[indice_255graus]
 	distancia_105graus = msg.ranges[indice_105graus]
 	distancia_180graus = msg.ranges[indice_180graus]
-			
-		
+
+
 	if(distancia_180graus < distancia_255graus or distancia_180graus < distancia_105graus):
 		acao_on_off = 0.1*(distancia_255graus - distancia_105graus)
 		if(acao_on_off > 0.4):
@@ -105,9 +105,9 @@ def callback(msg):
 
 
 class WallAvoid(object):
-    
+
 	def __init__(self):
-		
+
 		wa_sub = rospy.Subscriber('/scan', LaserScan, callback)
 
 		drive_msg = AckermannDriveStamped()
@@ -120,12 +120,12 @@ class WallAvoid(object):
 			rate.sleep()
 
 def main():
-	rospy.init_node('follow_the_wall_node')
+	rospy.init_node('wall_following_node')
 	wa = WallAvoid()
 	rospy.spin()
 
 
 # O drive_pub foi declarado global para que ele possa ser usado tando no construtor quanto na funcao. callback
-drive_pub = rospy.Publisher('/follow_the_wall', AckermannDriveStamped, queue_size=10)
+drive_pub = rospy.Publisher('/wall_following', AckermannDriveStamped, queue_size=10)
 
 main()

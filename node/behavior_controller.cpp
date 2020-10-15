@@ -47,6 +47,8 @@ private:
     int aeb_mux_idx;
     int go_fast_mux_idx;
     int go_slow_mux_idx;
+    int wall_following_mux_idx;
+    int follow_the_gap_mux_idx;
     // ***Add mux index for new planner here***
     // int new_mux_idx;
 
@@ -65,6 +67,8 @@ private:
     int aeb_button_idx;
     int go_fast_button_idx;
     int go_slow_button_idx;
+    int wall_following_button_idx;
+    int follow_the_gap_button_idx;
 
     // Key indices
     std::string joy_key_char;
@@ -77,6 +81,8 @@ private:
     std::string aeb_char;
     std::string go_fast_char;
     std::string go_slow_char;
+    std::string wall_following_char;
+    std::string follow_the_gap_char;
 
     // Is ebrake on? (not engaged, but on)
     bool safety_on;
@@ -140,6 +146,8 @@ public:
         n.getParam("aeb_mux_idx", aeb_mux_idx);
         n.getParam("go_fast_mux_idx", go_fast_mux_idx);
         n.getParam("go_slow_mux_idx", go_slow_mux_idx);
+        n.getParam("wall_following_mux_idx", wall_following_mux_idx);
+        n.getParam("follow_the_gap_mux_idx", follow_the_gap_mux_idx);
 
         // Get button indices
         n.getParam("joy_button_idx", joy_button_idx);
@@ -151,6 +159,8 @@ public:
         n.getParam("aeb_button_idx", aeb_button_idx);
         n.getParam("go_fast_button_idx", go_fast_button_idx);
         n.getParam("go_slow_button_idx", go_slow_button_idx);
+        n.getParam("wall_following_button_idx", wall_following_button_idx);
+        n.getParam("follow_the_gap_button_idx", follow_the_gap_button_idx);
 
         // Get key indices
         n.getParam("joy_key_char", joy_key_char);
@@ -162,6 +172,8 @@ public:
         n.getParam("aeb_char", aeb_char);
         n.getParam("go_fast_char", go_fast_char);
         n.getParam("go_slow_char", go_slow_char);
+        n.getParam("wall_following_char", wall_following_char);
+        n.getParam("follow_the_gap_char", follow_the_gap_char);
 
         // Initialize the mux controller
         n.getParam("mux_size", mux_size);
@@ -390,6 +402,14 @@ public:
         if (msg.data == go_slow_char) {
           // new planner
           toggle_mux(go_slow_mux_idx, "Go Slow");
+        }
+        if (msg.data == wall_following_char) {
+          // new planner
+          toggle_mux(wall_following_mux_idx, "Wall Following");
+        }
+        if (msg.data == follow_the_gap_char) {
+          // new planner
+          toggle_mux(follow_the_gap_mux_idx, "Follow the Gap");
         }
         if (msg.data == "g") {
           // new planner
