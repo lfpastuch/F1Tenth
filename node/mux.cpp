@@ -10,6 +10,8 @@
 
 #include "f1tenth_simulator/channel.h"
 
+// comentario para modificacao da permissao
+
 class Mux {
 private:
     // A ROS node

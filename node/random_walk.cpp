@@ -14,6 +14,8 @@
 // for RAND_MAX
 #include <cstdlib>
 
+// comentario para modificacao da permissao
+
 class RandomWalker {
 private:
     // A ROS node
