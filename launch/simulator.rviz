@@ -1,4 +1,4 @@
-Panels:
+FPanels:
   - Class: rviz/Displays
     Help Height: 87
     Name: Displays
@@ -232,7 +232,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: map
+    Fixed Frame: laser
     Frame Rate: 30
   Name: root
   Tools:

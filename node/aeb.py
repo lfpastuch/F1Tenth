@@ -45,7 +45,7 @@ def CheckTTC(msg):
 		aeb_msg.drive.steering_angle = 0
 		drive_pub.publish(aeb_msg)
 		if NotTriggered:
-			print "AEB triggered"
+			#print "AEB triggered"
 			NotTriggered = False
 
 CheckTTC.TimeStamp_LastMsg = 0;

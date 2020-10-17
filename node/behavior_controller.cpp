@@ -448,7 +448,8 @@ public:
             }
             if (mux_controller[follow_the_gap_mux_idx]){
                 mux_switch_count++;
-                if (mux_switch_count > 175 && !dist_min_existe){
+                if (dist_min_existe){mux_switch_count = 0;}
+                if (mux_switch_count > 125 && !dist_min_existe){
                     toggle_mux(wall_following_mux_idx, "Wall following");
                     mux_switch_count = 0;
                 }
