@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
   <!-- Listen to messages from joysicks -->
-  <node pkg="joy" name="joy_node" type="joy_node"/>
+  <!-- <node pkg="joy" name="joy_node" type="joy_node"/> -->
 
   <!-- Launch a map from the maps folder-->
-  <arg name="map" default="$(find f1tenth_simulator)/maps/vegas2.yaml"/>
+  <arg name="map" default="$(find f1tenth_simulator)/maps/vegas.yaml"/>
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map)"/>
 
   <!-- Launch the racecar model -->
@@ -26,27 +26,26 @@
   </node>
 
   <!-- Launch the Random Walker Node -->
-  <node pkg="f1tenth_simulator" name="random_walker" type="random_walk" output="screen">
+  <!-- <node pkg="f1tenth_simulator" name="random_walker" type="random_walk" output="screen">
     <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
-  </node>
+  </node> -->
 
   <!-- Launch the Keyboard Node -->
   <node pkg="f1tenth_simulator" name="keyboard" type="keyboard" output="screen">
     <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
   </node>
 
-  <!-- Launch the Wall Avoid Node -->
-  <node pkg="f1tenth_simulator" name="aeb_node" type="aeb.py" output="screen">
+  <!-- <node pkg="f1tenth_simulator" name="aeb_node" type="aeb.py" output="screen">
     <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
-  </node>
+  </node> -->
 
-  <node pkg="f1tenth_simulator" name="go_fast_node" type="go_fast.py" output="screen">
+  <!-- <node pkg="f1tenth_simulator" name="go_fast_node" type="go_fast.py" output="screen">
     <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
-  </node>
+  </node> -->
 
-  <node pkg="f1tenth_simulator" name="go_slow_node" type="go_slow.py" output="screen">
+  <!-- <node pkg="f1tenth_simulator" name="go_slow_node" type="go_slow.py" output="screen">
     <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>
-  </node>
+  </node> -->
 
   <node pkg="f1tenth_simulator" name="wall_following_node" type="follow_the_wall_script.py" output="screen">
     <rosparam command="load" file="$(find f1tenth_simulator)/params.yaml"/>

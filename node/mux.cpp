@@ -19,7 +19,7 @@ private:
     ros::Subscriber mux_sub;
 
     // Listen for messages from joystick and keyboard
-    ros::Subscriber joy_sub;
+    // ros::Subscriber joy_sub;
     ros::Subscriber key_sub;
 
 
@@ -27,11 +27,11 @@ private:
     ros::Publisher drive_pub;
 
     // Mux indices
-    int joy_mux_idx;
-    int key_mux_idx;
-    int aeb_mux_idx;
-    int go_fast_mux_idx;
-    int go_slow_mux_idx;
+    // int joy_mux_idx;
+    // int key_mux_idx;
+    // int aeb_mux_idx;
+    // int go_fast_mux_idx;
+    // int go_slow_mux_idx;
     int wall_following_mux_idx;
     int follow_the_gap_mux_idx;
 
@@ -63,10 +63,10 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string drive_topic, mux_topic, joy_topic, key_topic, aeb_topic, go_fast_topic, go_slow_topic, wall_following_topic, follow_the_gap_topic;
+        std::string drive_topic, mux_topic, key_topic, wall_following_topic, follow_the_gap_topic;
         n.getParam("drive_topic", drive_topic);
         n.getParam("mux_topic", mux_topic);
-        n.getParam("joy_topic", joy_topic);
+        // n.getParam("joy_topic", joy_topic);
         n.getParam("keyboard_topic", key_topic);
 
 
@@ -77,28 +77,28 @@ public:
         mux_sub = n.subscribe(mux_topic, 1, &Mux::mux_callback, this);
 
         // Start subscribers to listen to joy and keyboard messages
-        joy_sub = n.subscribe(joy_topic, 1, &Mux::joy_callback, this);
+        // joy_sub = n.subscribe(joy_topic, 1, &Mux::joy_callback, this);
         key_sub = n.subscribe(key_topic, 1, &Mux::key_callback, this);
 
 
         // get mux indices
-        n.getParam("joy_mux_idx", joy_mux_idx);
-        n.getParam("key_mux_idx", key_mux_idx);
-	      n.getParam("aeb_mux_idx", aeb_mux_idx);
-        n.getParam("go_fast_mux_idx", go_fast_mux_idx);
-        n.getParam("go_slow_mux_idx", go_slow_mux_idx);
+        // n.getParam("joy_mux_idx", joy_mux_idx);
+        // n.getParam("key_mux_idx", key_mux_idx);
+	      // n.getParam("aeb_mux_idx", aeb_mux_idx);
+        // n.getParam("go_fast_mux_idx", go_fast_mux_idx);
+        // n.getParam("go_slow_mux_idx", go_slow_mux_idx);
         n.getParam("wall_following_mux_idx", wall_following_mux_idx);
         n.getParam("follow_the_gap_mux_idx", follow_the_gap_mux_idx);
 
         // get params for joystick calculations
-        n.getParam("joy_speed_axis", joy_speed_axis);
-        n.getParam("joy_angle_axis", joy_angle_axis);
-        n.getParam("max_steering_angle", max_steering_angle);
-        n.getParam("max_speed", max_speed);
+        // n.getParam("joy_speed_axis", joy_speed_axis);
+        // n.getParam("joy_angle_axis", joy_angle_axis);
+        // n.getParam("max_steering_angle", max_steering_angle);
+        // n.getParam("max_speed", max_speed);
 
         // get params for keyboard driving
-        n.getParam("keyboard_speed", keyboard_speed);
-        n.getParam("keyboard_steer_ang", keyboard_steer_ang);
+        // n.getParam("keyboard_speed", keyboard_speed);
+        // n.getParam("keyboard_steer_ang", keyboard_steer_ang);
 
         // get size of mux
         n.getParam("mux_size", mux_size);
@@ -116,44 +116,44 @@ public:
 
         /// Add new channels here:
         // Random driver example
-        int random_walker_mux_idx;
-        std::string rand_drive_topic;
-        n.getParam("rand_drive_topic", rand_drive_topic);
-        n.getParam("random_walker_mux_idx", random_walker_mux_idx);
-        add_channel(rand_drive_topic, drive_topic, random_walker_mux_idx);
+        // int random_walker_mux_idx;
+        // std::string rand_drive_topic;
+        // n.getParam("rand_drive_topic", rand_drive_topic);
+        // n.getParam("random_walker_mux_idx", random_walker_mux_idx);
+        // add_channel(rand_drive_topic, drive_topic, random_walker_mux_idx);
 
         // Channel for emergency braking
-        int brake_mux_idx;
-        std::string brake_drive_topic;
-        n.getParam("brake_drive_topic", brake_drive_topic);
-        n.getParam("brake_mux_idx", brake_mux_idx);
-        add_channel(brake_drive_topic, drive_topic, brake_mux_idx);
+        // int brake_mux_idx;
+        // std::string brake_drive_topic;
+        // n.getParam("brake_drive_topic", brake_drive_topic);
+        // n.getParam("brake_mux_idx", brake_mux_idx);
+        // add_channel(brake_drive_topic, drive_topic, brake_mux_idx);
 
         // General navigation channel
-        int nav_mux_idx;
-        std::string nav_drive_topic;
-        n.getParam("nav_drive_topic", nav_drive_topic);
-        n.getParam("nav_mux_idx", nav_mux_idx);
-        add_channel(nav_drive_topic, drive_topic, nav_mux_idx);
+        // int nav_mux_idx;
+        // std::string nav_drive_topic;
+        // n.getParam("nav_drive_topic", nav_drive_topic);
+        // n.getParam("nav_mux_idx", nav_mux_idx);
+        // add_channel(nav_drive_topic, drive_topic, nav_mux_idx);
 
 	      // aeb channel
-        int aeb_mux_idx;
-        //std::string aeb_topic;
-        n.getParam("aeb_topic", aeb_topic);
-        n.getParam("aeb_mux_idx", aeb_mux_idx);
-        add_channel(aeb_topic, drive_topic, aeb_mux_idx);
+        // int aeb_mux_idx;
+        // //std::string aeb_topic;
+        // n.getParam("aeb_topic", aeb_topic);
+        // n.getParam("aeb_mux_idx", aeb_mux_idx);
+        // add_channel(aeb_topic, drive_topic, aeb_mux_idx);
 
-        int go_fast_mux_idx;
-        //std::string aeb_topic;
-        n.getParam("go_fast_topic", go_fast_topic);
-        n.getParam("go_fast_mux_idx", go_fast_mux_idx);
-        add_channel(go_fast_topic, drive_topic, go_fast_mux_idx);
-
-        int go_slow_mux_idx;
-        //std::string aeb_topic;
-        n.getParam("go_slow_topic", go_slow_topic);
-        n.getParam("go_slow_mux_idx", go_slow_mux_idx);
-        add_channel(go_slow_topic, drive_topic, go_slow_mux_idx);
+        // int go_fast_mux_idx;
+        // //std::string aeb_topic;
+        // n.getParam("go_fast_topic", go_fast_topic);
+        // n.getParam("go_fast_mux_idx", go_fast_mux_idx);
+        // add_channel(go_fast_topic, drive_topic, go_fast_mux_idx);
+        //
+        // int go_slow_mux_idx;
+        // //std::string aeb_topic;
+        // n.getParam("go_slow_topic", go_slow_topic);
+        // n.getParam("go_slow_mux_idx", go_slow_mux_idx);
+        // add_channel(go_slow_topic, drive_topic, go_slow_mux_idx);
 
         int wall_following_mux_idx;
         //std::string aeb_topic;
@@ -229,53 +229,53 @@ public:
         }
     }
 
-    void joy_callback(const sensor_msgs::Joy & msg) {
-        // make drive message from joystick if turned on
-        if (mux_controller[joy_mux_idx]) {
-            // Calculate desired velocity and steering angle
-            double desired_velocity = max_speed * msg.axes[joy_speed_axis];
-            double desired_steer = max_steering_angle * msg.axes[joy_angle_axis];
-
-            publish_to_drive(desired_velocity, desired_steer);
-        }
-    }
+    // void joy_callback(const sensor_msgs::Joy & msg) {
+    //     // make drive message from joystick if turned on
+    //     if (mux_controller[joy_mux_idx]) {
+    //         // Calculate desired velocity and steering angle
+    //         double desired_velocity = max_speed * msg.axes[joy_speed_axis];
+    //         double desired_steer = max_steering_angle * msg.axes[joy_angle_axis];
+    //
+    //         publish_to_drive(desired_velocity, desired_steer);
+    //     }
+    // }
 
 
     void key_callback(const std_msgs::String & msg) {
         // make drive message from keyboard if turned on
-        if (mux_controller[key_mux_idx]) {
-            // Determine desired velocity and steering angle
-            double desired_velocity = 0.0;
-            double desired_steer = 0.0;
-
-            bool publish = true;
-
-            if (msg.data == "w") {
-                // Forward
-                desired_velocity = keyboard_speed; // a good speed for keyboard control
-            } else if (msg.data == "s") {
-                // Backwards
-                desired_velocity = -keyboard_speed;
-            } else if (msg.data == "a") {
-                // Steer left and keep speed
-                desired_steer = keyboard_steer_ang;
-                desired_velocity = prev_key_velocity;
-            } else if (msg.data == "d") {
-                // Steer right and keep speed
-                desired_steer = -keyboard_steer_ang;
-                desired_velocity = prev_key_velocity;
-            } else if (msg.data == " ") {
-                // publish zeros to slow down/straighten out car
-            } else {
-                // so that it doesn't constantly publish zeros when you press other keys
-                publish = false;
-            }
-
-            if (publish) {
-                publish_to_drive(desired_velocity, desired_steer);
-                prev_key_velocity = desired_velocity;
-            }
-        }
+        // if (mux_controller[key_mux_idx]) {
+        //     // Determine desired velocity and steering angle
+        //     double desired_velocity = 0.0;
+        //     double desired_steer = 0.0;
+        //
+        //     bool publish = true;
+        //
+        //     if (msg.data == "w") {
+        //         // Forward
+        //         desired_velocity = keyboard_speed; // a good speed for keyboard control
+        //     } else if (msg.data == "s") {
+        //         // Backwards
+        //         desired_velocity = -keyboard_speed;
+        //     } else if (msg.data == "a") {
+        //         // Steer left and keep speed
+        //         desired_steer = keyboard_steer_ang;
+        //         desired_velocity = prev_key_velocity;
+        //     } else if (msg.data == "d") {
+        //         // Steer right and keep speed
+        //         desired_steer = -keyboard_steer_ang;
+        //         desired_velocity = prev_key_velocity;
+        //     } else if (msg.data == " ") {
+        //         // publish zeros to slow down/straighten out car
+        //     } else {
+        //         // so that it doesn't constantly publish zeros when you press other keys
+        //         publish = false;
+        //     }
+        //
+        //     if (publish) {
+        //         publish_to_drive(desired_velocity, desired_steer);
+        //         prev_key_velocity = desired_velocity;
+        //     }
+        // }
     }
 
 

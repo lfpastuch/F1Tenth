@@ -28,25 +28,25 @@ private:
     ros::NodeHandle n;
 
     // Listen for messages from joystick, keyboard, laser scan, odometry, and IMU
-    ros::Subscriber joy_sub;
+    // ros::Subscriber joy_sub;
     ros::Subscriber key_sub;
     ros::Subscriber laser_sub;
     ros::Subscriber odom_sub;
-    ros::Subscriber imu_sub;
-    ros::Subscriber brake_bool_sub;
+    // ros::Subscriber imu_sub;
+    // ros::Subscriber brake_bool_sub;
 
     // Publisher for mux controller
     ros::Publisher mux_pub;
 
     // Mux indices
-    int joy_mux_idx;
-    int key_mux_idx;
-    int random_walker_mux_idx;
-    int nav_mux_idx;
-    int brake_mux_idx;
-    int aeb_mux_idx;
-    int go_fast_mux_idx;
-    int go_slow_mux_idx;
+    // int joy_mux_idx;
+    // int key_mux_idx;
+    // int random_walker_mux_idx;
+    // int nav_mux_idx;
+    // int brake_mux_idx;
+    // int aeb_mux_idx;
+    // int go_fast_mux_idx;
+    // int go_slow_mux_idx;
     int wall_following_mux_idx;
     int follow_the_gap_mux_idx;
     // ***Add mux index for new planner here***
@@ -57,30 +57,30 @@ private:
     int mux_size;
 
     // Button indices
-    int joy_button_idx;
-    int key_button_idx;
-    int random_walk_button_idx;
-    int brake_button_idx;
-    int nav_button_idx;
-    // ***Add button index for new planner here***
-    // int new_button_idx;
-    int aeb_button_idx;
-    int go_fast_button_idx;
-    int go_slow_button_idx;
-    int wall_following_button_idx;
-    int follow_the_gap_button_idx;
+    // int joy_button_idx;
+    // int key_button_idx;
+    // int random_walk_button_idx;
+    // int brake_button_idx;
+    // int nav_button_idx;
+    // // ***Add button index for new planner here***
+    // // int new_button_idx;
+    // int aeb_button_idx;
+    // int go_fast_button_idx;
+    // int go_slow_button_idx;
+    // int wall_following_button_idx;
+    // int follow_the_gap_button_idx;
 
     // Key indices
-    std::string joy_key_char;
-    std::string keyboard_key_char;
-    std::string brake_key_char;
-    std::string random_walk_key_char;
-    std::string nav_key_char;
+    // std::string joy_key_char;
+    // std::string keyboard_key_char;
+    // std::string brake_key_char;
+    // std::string random_walk_key_char;
+    // std::string nav_key_char;
     // ***Add key char for new planner here***
     // int new_key_char;
-    std::string aeb_char;
-    std::string go_fast_char;
-    std::string go_slow_char;
+    // std::string aeb_char;
+    // std::string go_fast_char;
+    // std::string go_slow_char;
     std::string wall_following_char;
     std::string follow_the_gap_char;
 
@@ -121,59 +121,59 @@ public:
         std::string scan_topic, odom_topic, imu_topic, joy_topic, keyboard_topic, brake_bool_topic, mux_topic;
         n.getParam("scan_topic", scan_topic);
         n.getParam("odom_topic", odom_topic);
-        n.getParam("imu_topic", imu_topic);
-        n.getParam("joy_topic", joy_topic);
+        // n.getParam("imu_topic", imu_topic);
+        // n.getParam("joy_topic", joy_topic);
         n.getParam("mux_topic", mux_topic);
         n.getParam("keyboard_topic", keyboard_topic);
-        n.getParam("brake_bool_topic", brake_bool_topic);
+        // n.getParam("brake_bool_topic", brake_bool_topic);
 
         // Make a publisher for mux messages
         mux_pub = n.advertise<std_msgs::Int32MultiArray>(mux_topic, 10);
 
         // Start subscribers to listen to laser scan, joy, IMU, and odom messages
         laser_sub = n.subscribe(scan_topic, 1, &BehaviorController::laser_callback, this);
-        joy_sub = n.subscribe(joy_topic, 1, &BehaviorController::joy_callback, this);
-        imu_sub = n.subscribe(imu_topic, 1, &BehaviorController::imu_callback, this);
+        // joy_sub = n.subscribe(joy_topic, 1, &BehaviorController::joy_callback, this);
+        // imu_sub = n.subscribe(imu_topic, 1, &BehaviorController::imu_callback, this);
         odom_sub = n.subscribe(odom_topic, 1, &BehaviorController::odom_callback, this);
         key_sub = n.subscribe(keyboard_topic, 1, &BehaviorController::key_callback, this);
-        brake_bool_sub = n.subscribe(brake_bool_topic, 1, &BehaviorController::brake_callback, this);
+        // brake_bool_sub = n.subscribe(brake_bool_topic, 1, &BehaviorController::brake_callback, this);
 
         // Get mux indices
-        n.getParam("joy_mux_idx", joy_mux_idx);
-        n.getParam("key_mux_idx", key_mux_idx);
-        n.getParam("random_walker_mux_idx", random_walker_mux_idx);
-        n.getParam("brake_mux_idx", brake_mux_idx);
-        n.getParam("nav_mux_idx", nav_mux_idx);
+        // n.getParam("joy_mux_idx", joy_mux_idx);
+        // n.getParam("key_mux_idx", key_mux_idx);
+        // n.getParam("random_walker_mux_idx", random_walker_mux_idx);
+        // n.getParam("brake_mux_idx", brake_mux_idx);
+        // n.getParam("nav_mux_idx", nav_mux_idx);
         // ***Add mux index for new planner here***
-        n.getParam("aeb_mux_idx", aeb_mux_idx);
-        n.getParam("go_fast_mux_idx", go_fast_mux_idx);
-        n.getParam("go_slow_mux_idx", go_slow_mux_idx);
+        // n.getParam("aeb_mux_idx", aeb_mux_idx);
+        // n.getParam("go_fast_mux_idx", go_fast_mux_idx);
+        // n.getParam("go_slow_mux_idx", go_slow_mux_idx);
         n.getParam("wall_following_mux_idx", wall_following_mux_idx);
         n.getParam("follow_the_gap_mux_idx", follow_the_gap_mux_idx);
 
-        // Get button indices
-        n.getParam("joy_button_idx", joy_button_idx);
-        n.getParam("key_button_idx", key_button_idx);
-        n.getParam("random_walk_button_idx", random_walk_button_idx);
-        n.getParam("brake_button_idx", brake_button_idx);
-        n.getParam("nav_button_idx", nav_button_idx);
-        // ***Add button index for new planner here***
-        n.getParam("aeb_button_idx", aeb_button_idx);
-        n.getParam("go_fast_button_idx", go_fast_button_idx);
-        n.getParam("go_slow_button_idx", go_slow_button_idx);
-        n.getParam("wall_following_button_idx", wall_following_button_idx);
-        n.getParam("follow_the_gap_button_idx", follow_the_gap_button_idx);
+        // // Get button indices
+        // n.getParam("joy_button_idx", joy_button_idx);
+        // n.getParam("key_button_idx", key_button_idx);
+        // n.getParam("random_walk_button_idx", random_walk_button_idx);
+        // n.getParam("brake_button_idx", brake_button_idx);
+        // n.getParam("nav_button_idx", nav_button_idx);
+        // // ***Add button index for new planner here***
+        // n.getParam("aeb_button_idx", aeb_button_idx);
+        // n.getParam("go_fast_button_idx", go_fast_button_idx);
+        // n.getParam("go_slow_button_idx", go_slow_button_idx);
+        // n.getParam("wall_following_button_idx", wall_following_button_idx);
+        // n.getParam("follow_the_gap_button_idx", follow_the_gap_button_idx);
 
         // Get key indices
-        n.getParam("joy_key_char", joy_key_char);
-        n.getParam("keyboard_key_char", keyboard_key_char);
-        n.getParam("random_walk_key_char", random_walk_key_char);
-        n.getParam("brake_key_char", brake_key_char);
-        n.getParam("nav_key_char", nav_key_char);
-        // ***Add key char for new planner here***
-        n.getParam("aeb_char", aeb_char);
-        n.getParam("go_fast_char", go_fast_char);
-        n.getParam("go_slow_char", go_slow_char);
+        // n.getParam("joy_key_char", joy_key_char);
+        // n.getParam("keyboard_key_char", keyboard_key_char);
+        // n.getParam("random_walk_key_char", random_walk_key_char);
+        // n.getParam("brake_key_char", brake_key_char);
+        // n.getParam("nav_key_char", nav_key_char);
+        // // ***Add key char for new planner here***
+        // n.getParam("aeb_char", aeb_char);
+        // n.getParam("go_fast_char", go_fast_char);
+        // n.getParam("go_slow_char", go_slow_char);
         n.getParam("wall_following_char", wall_following_char);
         n.getParam("follow_the_gap_char", follow_the_gap_char);
 
@@ -301,110 +301,110 @@ public:
         }
     }
 
-    void toggle_brake_mux() {
-        ROS_INFO_STREAM("Emergency brake engaged");
-        // turn everything off
-        for (int i = 0; i < mux_size; i++) {
-            mux_controller[i] = false;
-        }
-        // turn on desired controller
-        mux_controller[brake_mux_idx] = true;
-
-        publish_mux();
-    }
+    // void toggle_brake_mux() {
+    //     ROS_INFO_STREAM("Emergency brake engaged");
+    //     // turn everything off
+    //     for (int i = 0; i < mux_size; i++) {
+    //         mux_controller[i] = false;
+    //     }
+    //     // turn on desired controller
+    //     mux_controller[brake_mux_idx] = true;
+    //
+    //     publish_mux();
+    // }
 
 
     /// ---------------------- CALLBACK FUNCTIONS ----------------------
 
-    void brake_callback(const std_msgs::Bool & msg) {
-        if (msg.data && safety_on) {
-            toggle_brake_mux();
-        } else if (!msg.data && mux_controller[brake_mux_idx]) {
-            mux_controller[brake_mux_idx] = false;
-        }
-    }
+    // void brake_callback(const std_msgs::Bool & msg) {
+    //     if (msg.data && safety_on) {
+    //         toggle_brake_mux();
+    //     } else if (!msg.data && mux_controller[brake_mux_idx]) {
+    //         mux_controller[brake_mux_idx] = false;
+    //     }
+    // }
 
-    void joy_callback(const sensor_msgs::Joy & msg) {
-        // Changing mux_controller:
-        if (msg.buttons[joy_button_idx]) {
-            // joystick
-            toggle_mux(joy_mux_idx, "Joystick");
-        }
-        if (msg.buttons[key_button_idx]) {
-            // keyboard
-            toggle_mux(key_mux_idx, "Keyboard");
-        }
-        else if (msg.buttons[brake_button_idx]) {
-            // emergency brake
-            if (safety_on) {
-                ROS_INFO("Emergency brake turned off");
-                safety_on = false;
-            }
-            else {
-                ROS_INFO("Emergency brake turned on");
-                safety_on = true;
-            }
-        }
-        else if (msg.buttons[random_walk_button_idx]) {
-            // random walker
-            toggle_mux(random_walker_mux_idx, "Random Walker");
-        } else if (msg.buttons[nav_button_idx]) {
-            // nav
-            toggle_mux(nav_mux_idx, "Navigation");
-        }
-	      if (msg.buttons[aeb_button_idx]) {
-            // keyboard
-            toggle_mux(aeb_mux_idx, "Autonomous Emergency Braking");
-        }
-        if (msg.buttons[go_fast_button_idx]) {
-            // keyboard
-            toggle_mux(go_fast_mux_idx, "Go Fast");
-        }
-        if (msg.buttons[go_slow_button_idx]) {
-            // keyboard
-            toggle_mux(go_slow_button_idx, "Go Slow");
-        }
-
-    }
+    // void joy_callback(const sensor_msgs::Joy & msg) {
+    //     // Changing mux_controller:
+    //     if (msg.buttons[joy_button_idx]) {
+    //         // joystick
+    //         toggle_mux(joy_mux_idx, "Joystick");
+    //     }
+    //     if (msg.buttons[key_button_idx]) {
+    //         // keyboard
+    //         toggle_mux(key_mux_idx, "Keyboard");
+    //     }
+    //     else if (msg.buttons[brake_button_idx]) {
+    //         // emergency brake
+    //         if (safety_on) {
+    //             ROS_INFO("Emergency brake turned off");
+    //             safety_on = false;
+    //         }
+    //         else {
+    //             ROS_INFO("Emergency brake turned on");
+    //             safety_on = true;
+    //         }
+    //     }
+    //     else if (msg.buttons[random_walk_button_idx]) {
+    //         // random walker
+    //         toggle_mux(random_walker_mux_idx, "Random Walker");
+    //     } else if (msg.buttons[nav_button_idx]) {
+    //         // nav
+    //         toggle_mux(nav_mux_idx, "Navigation");
+    //     }
+	  //     if (msg.buttons[aeb_button_idx]) {
+    //         // keyboard
+    //         toggle_mux(aeb_mux_idx, "Autonomous Emergency Braking");
+    //     }
+    //     if (msg.buttons[go_fast_button_idx]) {
+    //         // keyboard
+    //         toggle_mux(go_fast_mux_idx, "Go Fast");
+    //     }
+    //     if (msg.buttons[go_slow_button_idx]) {
+    //         // keyboard
+    //         toggle_mux(go_slow_button_idx, "Go Slow");
+    //     }
+    //
+    // }
 
     void key_callback(const std_msgs::String & msg) {
         // Changing mux controller:
-        if (msg.data == joy_key_char) {
-            // joystick
-            toggle_mux(joy_mux_idx, "Joystick");
-        } else if (msg.data == keyboard_key_char) {
-            // keyboard
-            toggle_mux(key_mux_idx, "Keyboard");
-        } else if (msg.data == brake_key_char) {
-            // emergency brake
-            if (safety_on) {
-                ROS_INFO("Emergency brake turned off");
-                safety_on = false;
-            }
-            else {
-                ROS_INFO("Emergency brake turned on");
-                safety_on = true;
-            }
-        } else if (msg.data == random_walk_key_char) {
-            // random walker
-            toggle_mux(random_walker_mux_idx, "Random Walker");
-        } else if (msg.data == nav_key_char) {
-            // nav
-            toggle_mux(nav_mux_idx, "Navigation");
-        }
+        // if (msg.data == joy_key_char) {
+        //     // joystick
+        //     toggle_mux(joy_mux_idx, "Joystick");
+        // } else if (msg.data == keyboard_key_char) {
+        //     // keyboard
+        //     toggle_mux(key_mux_idx, "Keyboard");
+        // } else if (msg.data == brake_key_char) {
+        //     // emergency brake
+        //     if (safety_on) {
+        //         ROS_INFO("Emergency brake turned off");
+        //         safety_on = false;
+        //     }
+        //     else {
+        //         ROS_INFO("Emergency brake turned on");
+        //         safety_on = true;
+        //     }
+        // } else if (msg.data == random_walk_key_char) {
+        //     // random walker
+        //     toggle_mux(random_walker_mux_idx, "Random Walker");
+        // } else if (msg.data == nav_key_char) {
+        //     // nav
+        //     toggle_mux(nav_mux_idx, "Navigation");
+        // }
         // ***Add new else if statement here for new planning method***
-        if (msg.data == aeb_char) {
-          // new planner
-          toggle_mux(aeb_mux_idx, "Autonomous Emergency Braking");
-        }
-        if (msg.data == go_fast_char) {
-          // new planner
-          toggle_mux(go_fast_mux_idx, "Go Fast");
-        }
-        if (msg.data == go_slow_char) {
-          // new planner
-          toggle_mux(go_slow_mux_idx, "Go Slow");
-        }
+        // if (msg.data == aeb_char) {
+        //   // new planner
+        //   toggle_mux(aeb_mux_idx, "Autonomous Emergency Braking");
+        // }
+        // if (msg.data == go_fast_char) {
+        //   // new planner
+        //   toggle_mux(go_fast_mux_idx, "Go Fast");
+        // }
+        // if (msg.data == go_slow_char) {
+        //   // new planner
+        //   toggle_mux(go_slow_mux_idx, "Go Slow");
+        // }
         if (msg.data == wall_following_char) {
           // new planner
           toggle_mux(wall_following_mux_idx, "Wall Following");
@@ -468,9 +468,9 @@ public:
         state.y = msg.pose.pose.position.y;
     }
 
-    void imu_callback(const sensor_msgs::Imu & msg) {
-
-    }
+    // void imu_callback(const sensor_msgs::Imu & msg) {
+    //
+    // }
 
 
 };
