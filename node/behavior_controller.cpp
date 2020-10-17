@@ -423,59 +423,34 @@ public:
         // check for a collision
         collision_checker(msg);
 
-        // bool dist_min_existe = false;
+        bool dist_min_existe = false;
 
         if (!collided && go){
 
-            // int indice_min = 170*1080/360;
-            // int indice_max = 190*1080/360;
-            // int tamanho_lista = indice_max-indice_min;
-            int indice_90graus = 180*1080/360;
+            int indice_min = 170*1080/360;
+            int indice_max = 190*1080/360;
 
-            // ROS_INFO_STREAM("Min: " + to_string(indice_min));
-            // ROS_INFO_STREAM("Max: " + to_string(indice_max));
+            string distancias = "";
+            double distancia;
+            double ang;
 
-            // double Dist[tamanho_lista];
-
-            // string distancias = "";
-            // double distancia;
-            // double ang;
-
-            // for (int i = indice_min; i < indice_max; i++) {
-            // //   ROS_INFO_STREAM("")
-            //     distancia = msg.ranges[i];
-            //     if (distancia < 4){
-            //         dist_min_existe = true;
-            //         ang = i*360/1080;
-            //     }
-            //     // Dist[i-indice_min] = msg.ranges[i];
-            //     // distancias = distancias + " i" + to_string(i-indice_min) + ": " + to_string(Dist[i-indice_min]) + "; ";
-            // }
-
-            // if (dist_min_existe && !mux_controller[go_slow_mux_idx]){
-            //   ROS_INFO_STREAM("Dist: " + to_string(distancia) + "Ang:" + to_string(ang));
-            //     toggle_mux(go_slow_mux_idx, "Go Slow");
-            // }
-            // else if (!dist_min_existe && !mux_controller[go_fast_mux_idx]){
-            //     toggle_mux(go_fast_mux_idx, "Go Fast");
-            // }
-
-          	double DistX = msg.ranges[indice_90graus];
-
-            if (DistX > 5.5 && DistX < 10 && !mux_controller[go_slow_mux_idx]){
-                toggle_mux(go_slow_mux_idx, "Go Slow");
+            for (int i = indice_min; i < indice_max; i++) {
+            //   ROS_INFO_STREAM("")
+                distancia = msg.ranges[i];
+                if (distancia < 4){
+                    dist_min_existe = true;
+                    ang = i*360/1080;
+                }
             }
-            else if (DistX > 10.5 && !mux_controller[go_fast_mux_idx]){
-                toggle_mux(go_fast_mux_idx, "Go Fast");
-            }
-            else if (DistX > 0 && DistX < 5 && !mux_controller[aeb_mux_idx]){
-                toggle_mux(aeb_mux_idx, "AEB system");
-            }
-            //
-            // ROS_INFO_STREAM(distancias);
 
+            if (dist_min_existe && !mux_controller[follow_the_gap_mux_idx]){
+              ROS_INFO_STREAM("Dist: " + to_string(distancia) + "Ang:" + to_string(ang));
+                toggle_mux(follow_the_gap_mux_idx, "Follow the gap");
+            }
+            else if (!dist_min_existe && !mux_controller[wall_following_mux_idx]){
+                toggle_mux(wall_following_mux_idx, "Wall following");
+            }
         }
-
     }
 
     void odom_callback(const nav_msgs::Odometry & msg) {
