@@ -96,9 +96,9 @@ wall_following_char: "u"
 follow_the_gap_char: "i"
 # new_key_char: "z"
 
-# Keyboard driving params
-keyboard_speed: 1.8  # meters/second
-keyboard_steer_ang: .3  # radians
+# # Keyboard driving params
+# keyboard_speed: 1.8  # meters/second
+# keyboard_steer_ang: .3  # radians
 
 # obstacle parameters
 obstacle_size: 2
@@ -114,7 +114,7 @@ ground_truth_pose_topic: "/gt_pose"
 odom_topic: "/odom"
 # imu_topic: "/imu"
 pose_rviz_topic: "/initialpose"
-keyboard_topic: "/key"
+# keyboard_topic: "/key"
 # brake_bool_topic: "/brake_bool"
 mux_topic: "/mux"
 

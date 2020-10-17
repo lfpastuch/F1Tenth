@@ -30,7 +30,7 @@ private:
 
     // Listen for messages from joystick, keyboard, laser scan, odometry, and IMU
     // ros::Subscriber joy_sub;
-    ros::Subscriber key_sub;
+    // ros::Subscriber key_sub;
     ros::Subscriber laser_sub;
     ros::Subscriber odom_sub;
     // ros::Subscriber imu_sub;
@@ -90,7 +90,7 @@ private:
 
     bool collided = false;
 
-    bool go = false;
+    // bool go = false;
 
     int mux_switch_count = 250;
 
@@ -119,13 +119,13 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string scan_topic, odom_topic, imu_topic, joy_topic, keyboard_topic, brake_bool_topic, mux_topic;
+        std::string scan_topic, odom_topic, mux_topic;
         n.getParam("scan_topic", scan_topic);
         n.getParam("odom_topic", odom_topic);
         // n.getParam("imu_topic", imu_topic);
         // n.getParam("joy_topic", joy_topic);
         n.getParam("mux_topic", mux_topic);
-        n.getParam("keyboard_topic", keyboard_topic);
+        // n.getParam("keyboard_topic", keyboard_topic);
         // n.getParam("brake_bool_topic", brake_bool_topic);
 
         // Make a publisher for mux messages
@@ -136,7 +136,7 @@ public:
         // joy_sub = n.subscribe(joy_topic, 1, &BehaviorController::joy_callback, this);
         // imu_sub = n.subscribe(imu_topic, 1, &BehaviorController::imu_callback, this);
         odom_sub = n.subscribe(odom_topic, 1, &BehaviorController::odom_callback, this);
-        key_sub = n.subscribe(keyboard_topic, 1, &BehaviorController::key_callback, this);
+        // key_sub = n.subscribe(keyboard_topic, 1, &BehaviorController::key_callback, this);
         // brake_bool_sub = n.subscribe(brake_bool_topic, 1, &BehaviorController::brake_callback, this);
 
         // Get mux indices
@@ -368,58 +368,58 @@ public:
     //
     // }
 
-    void key_callback(const std_msgs::String & msg) {
-        // Changing mux controller:
-        // if (msg.data == joy_key_char) {
-        //     // joystick
-        //     toggle_mux(joy_mux_idx, "Joystick");
-        // } else if (msg.data == keyboard_key_char) {
-        //     // keyboard
-        //     toggle_mux(key_mux_idx, "Keyboard");
-        // } else if (msg.data == brake_key_char) {
-        //     // emergency brake
-        //     if (safety_on) {
-        //         ROS_INFO("Emergency brake turned off");
-        //         safety_on = false;
-        //     }
-        //     else {
-        //         ROS_INFO("Emergency brake turned on");
-        //         safety_on = true;
-        //     }
-        // } else if (msg.data == random_walk_key_char) {
-        //     // random walker
-        //     toggle_mux(random_walker_mux_idx, "Random Walker");
-        // } else if (msg.data == nav_key_char) {
-        //     // nav
-        //     toggle_mux(nav_mux_idx, "Navigation");
-        // }
-        // ***Add new else if statement here for new planning method***
-        // if (msg.data == aeb_char) {
-        //   // new planner
-        //   toggle_mux(aeb_mux_idx, "Autonomous Emergency Braking");
-        // }
-        // if (msg.data == go_fast_char) {
-        //   // new planner
-        //   toggle_mux(go_fast_mux_idx, "Go Fast");
-        // }
-        // if (msg.data == go_slow_char) {
-        //   // new planner
-        //   toggle_mux(go_slow_mux_idx, "Go Slow");
-        // }
-        if (msg.data == wall_following_char) {
-          // new planner
-          toggle_mux(wall_following_mux_idx, "Wall Following");
-        }
-        if (msg.data == follow_the_gap_char) {
-          // new planner
-          toggle_mux(follow_the_gap_mux_idx, "Follow the Gap");
-        }
-        if (msg.data == "g") {
-          // new planner
-          go = true;
-        }
-
-    }
+    // void key_callback(const std_msgs::String & msg) {
+    //     // Changing mux controller:
+    //     if (msg.data == joy_key_char) {
+    //         // joystick
+    //         toggle_mux(joy_mux_idx, "Joystick");
+    //     } else if (msg.data == keyboard_key_char) {
+    //         // keyboard
+    //         toggle_mux(key_mux_idx, "Keyboard");
+    //     } else if (msg.data == brake_key_char) {
+    //         // emergency brake
+    //         if (safety_on) {
+    //             ROS_INFO("Emergency brake turned off");
+    //             safety_on = false;
+    //         }
+    //         else {
+    //             ROS_INFO("Emergency brake turned on");
+    //             safety_on = true;
+    //         }
+    //     } else if (msg.data == random_walk_key_char) {
+    //         // random walker
+    //         toggle_mux(random_walker_mux_idx, "Random Walker");
+    //     } else if (msg.data == nav_key_char) {
+    //         // nav
+    //         toggle_mux(nav_mux_idx, "Navigation");
+    //     }
+    //     ***Add new else if statement here for new planning method***
+    //     if (msg.data == aeb_char) {
+    //       // new planner
+    //       toggle_mux(aeb_mux_idx, "Autonomous Emergency Braking");
+    //     }
+    //     if (msg.data == go_fast_char) {
+    //       // new planner
+    //       toggle_mux(go_fast_mux_idx, "Go Fast");
+    //     }
+    //     if (msg.data == go_slow_char) {
+    //       // new planner
+    //       toggle_mux(go_slow_mux_idx, "Go Slow");
+    //     }
+    //     if (msg.data == wall_following_char) {
+    //       // new planner
+    //       toggle_mux(wall_following_mux_idx, "Wall Following");
+    //     }
+    //     if (msg.data == follow_the_gap_char) {
+    //       // new planner
+    //       toggle_mux(follow_the_gap_mux_idx, "Follow the Gap");
+    //     }
+    //     if (msg.data == "g") {
+    //       // new planner
+    //       go = true;
+    //     }
+    //
+    // }
 
     void laser_callback(const sensor_msgs::LaserScan & msg) {
 
@@ -427,20 +427,20 @@ public:
 
         bool dist_min_existe = false;
 
-        if (!collided && go){
+        if (!collided){
 
             int indice_min = 165*1080/360;
             int indice_max = 195*1080/360;
 
             string distancias = "";
             double distancia;
-            double ang;
+            // double ang;
 
             for (int i = indice_min; i < indice_max; i++) {
                 distancia = msg.ranges[i];
                 if (distancia < 4){
                     dist_min_existe = true;
-                    ang = i*360/1080;
+                    // ang = i*360/1080;
                 }
             }
 
@@ -450,7 +450,7 @@ public:
             if (mux_controller[follow_the_gap_mux_idx]){
                 mux_switch_count++;
                 if (dist_min_existe){mux_switch_count = 0;}
-                if (mux_switch_count > 125 && !dist_min_existe){
+                if (mux_switch_count > 175 && !dist_min_existe){
                     toggle_mux(wall_following_mux_idx, "Wall following");
                     mux_switch_count = 0;
                 }

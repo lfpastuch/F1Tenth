@@ -22,7 +22,7 @@ private:
 
     // Listen for messages from joystick and keyboard
     // ros::Subscriber joy_sub;
-    ros::Subscriber key_sub;
+    // ros::Subscriber key_sub;
 
 
     // Publish drive data to simulator/car
@@ -51,12 +51,12 @@ private:
     std::vector<bool> prev_mux;
 
     // Params for joystick calculations
-    int joy_speed_axis, joy_angle_axis;
-    double max_speed, max_steering_angle;
-    // For keyboard driving
-    double prev_key_velocity=0.0;
-    double keyboard_speed;
-    double keyboard_steer_ang;
+    // int joy_speed_axis, joy_angle_axis;
+    // double max_speed, max_steering_angle;
+    // // For keyboard driving
+    // double prev_key_velocity=0.0;
+    // double keyboard_speed;
+    // double keyboard_steer_ang;
 
 
 public:
@@ -65,11 +65,11 @@ public:
         n = ros::NodeHandle("~");
 
         // get topic names
-        std::string drive_topic, mux_topic, key_topic, wall_following_topic, follow_the_gap_topic;
+        std::string drive_topic, mux_topic, wall_following_topic, follow_the_gap_topic;
         n.getParam("drive_topic", drive_topic);
         n.getParam("mux_topic", mux_topic);
         // n.getParam("joy_topic", joy_topic);
-        n.getParam("keyboard_topic", key_topic);
+        // n.getParam("keyboard_topic", key_topic);
 
 
         // Make a publisher for drive messages
@@ -80,7 +80,7 @@ public:
 
         // Start subscribers to listen to joy and keyboard messages
         // joy_sub = n.subscribe(joy_topic, 1, &Mux::joy_callback, this);
-        key_sub = n.subscribe(key_topic, 1, &Mux::key_callback, this);
+        // key_sub = n.subscribe(key_topic, 1, &Mux::key_callback, this);
 
 
         // get mux indices
@@ -243,7 +243,7 @@ public:
     // }
 
 
-    void key_callback(const std_msgs::String & msg) {
+    // void key_callback(const std_msgs::String & msg) {
         // make drive message from keyboard if turned on
         // if (mux_controller[key_mux_idx]) {
         //     // Determine desired velocity and steering angle
@@ -278,7 +278,7 @@ public:
         //         prev_key_velocity = desired_velocity;
         //     }
         // }
-    }
+    // }
 
 
 };
