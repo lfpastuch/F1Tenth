@@ -41,12 +41,8 @@ def callback(msg):
     Função que é ativada a cada leitura do scan e atualiza a "gap array"
     aumentando os obstáculos proximos para auxiliar a escolha da melhor direção.
     '''
-<<<<<<< HEAD
-    global gapArray 
-    
-=======
+
     global gapArray
->>>>>>> 42e15d8b3e47def3725fba34c45ccda592d4d916
     #define-se o arco de visão onde estamos procurando os obstáculos, e a menor distância entre o carro e os obstáculos.
     rangeMax=int(270*1080/360)
     rangeMin=int(90*1080/360)
@@ -114,16 +110,12 @@ class FollowTheGap(object):
         rate = rospy.Rate(100)
 
         while not rospy.is_shutdown():
-<<<<<<< HEAD
             global gapArray
-=======
-            #global gapArray
->>>>>>> 42e15d8b3e47def3725fba34c45ccda592d4d916
             #print gapArray
             self.GapFollow(gapArray)
             rate.sleep()
 
-#
+
     def GapFollow(self, listaScan):
 
         minDist = 4.0
