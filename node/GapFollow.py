@@ -42,10 +42,10 @@ def callback(msg):
     aumentando os obstáculos proximos para auxiliar a escolha da melhor direção.
     '''
     global gapArray 
+    
     #define-se o arco de visão onde estamos procurando os obstáculos, e a menor distância entre o carro e os obstáculos.
     rangeMax=int(270*1080/360)  
     rangeMin=int(90*1080/360)
-    #minDist=4.0
 
     #transformar em lista a tupple de valores de msgs.ranges adquiridas do Lidar
 #    t=len(msg.ranges)
@@ -111,7 +111,7 @@ class FollowTheGap(object):
 		
         while not rospy.is_shutdown():
             global gapArray
-            print gapArray
+            #print gapArray
             self.GapFollow(gapArray)
             rate.sleep()    
             
