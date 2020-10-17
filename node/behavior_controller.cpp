@@ -91,6 +91,8 @@ private:
 
     bool go = false;
 
+    int mux_switch_count = 250;
+
     // To roughly keep track of vehicle state
     racecar_simulator::CarState state;
 
@@ -420,22 +422,20 @@ public:
 
     void laser_callback(const sensor_msgs::LaserScan & msg) {
 
-        // check for a collision
         collision_checker(msg);
 
         bool dist_min_existe = false;
 
         if (!collided && go){
 
-            int indice_min = 170*1080/360;
-            int indice_max = 190*1080/360;
+            int indice_min = 165*1080/360;
+            int indice_max = 195*1080/360;
 
             string distancias = "";
             double distancia;
             double ang;
 
             for (int i = indice_min; i < indice_max; i++) {
-            //   ROS_INFO_STREAM("")
                 distancia = msg.ranges[i];
                 if (distancia < 4){
                     dist_min_existe = true;
@@ -444,10 +444,16 @@ public:
             }
 
             if (dist_min_existe && !mux_controller[follow_the_gap_mux_idx]){
-              ROS_INFO_STREAM("Dist: " + to_string(distancia) + "Ang:" + to_string(ang));
                 toggle_mux(follow_the_gap_mux_idx, "Follow the gap");
             }
-            else if (!dist_min_existe && !mux_controller[wall_following_mux_idx]){
+            if (mux_controller[follow_the_gap_mux_idx]){
+                mux_switch_count++;
+                if (mux_switch_count > 175 && !dist_min_existe){
+                    toggle_mux(wall_following_mux_idx, "Wall following");
+                    mux_switch_count = 0;
+                }
+            }
+            if (!mux_controller[follow_the_gap_mux_idx] && !mux_controller[wall_following_mux_idx]){
                 toggle_mux(wall_following_mux_idx, "Wall following");
             }
         }

@@ -50,8 +50,8 @@ def callback(msg):
 
 	#print(AB)
 
-	Kp = 2
-	Kd = 1
+	Kp = 0.8
+	Kd = 0.5
 
 	#erro_atual = set_point - (CD+CD2)/2
 	erro_atual = set_point - CD
