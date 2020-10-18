@@ -15,7 +15,7 @@ gapArray = [0] #definindo a variavel global que será compartilhada, assim
 bestGapTu = ()
 
 
-def corrigeGap(lista, valorMin, x = 6):
+def corrigeGap(lista, valorMin, x = 3):
     """
     Entradas são a lista de valores lidos pelo lidar o valorMinimo que é um float, e x que é um inteiro.
     Retorna a lista transformando todos os valores menores do que o valor minimo, e x de seus adjacentes em 0
@@ -44,8 +44,8 @@ def callback(msg):
 
     global gapArray
     #define-se o arco de visão onde estamos procurando os obstáculos, e a menor distância entre o carro e os obstáculos.
-    rangeMax=int(270*1080/360)
-    rangeMin=int(90*1080/360)
+    rangeMax=int(260*1080/360)
+    rangeMin=int(100*1080/360)
 
     #transformar em lista a tupple de valores de msgs.ranges adquiridas do Lidar
 #    t=len(msg.ranges)
@@ -118,27 +118,35 @@ class FollowTheGap(object):
 
     def GapFollow(self, listaScan):
 
-        minDist = 4.0
+        minDist = 2.0
         #função para retornar a lista de leituras com as lacunas sendo valores diferentes de zero
-        GPArray=corrigeGap(listaScan, minDist)
+        GPArray=corrigeGap(listaScan, minDist, 8)
         #rospy.loginfo(str(dist)) #usado para teste
         direc_msg = AckermannDriveStamped()
         direc_msg.drive.steering_angle = 0
 
 
-        direc_msg.drive.speed = 0.5
+        direc_msg.drive.speed = 0.0
 
         global gap_pub
 
         gapTuple=melhorGap(GPArray)
+        
+        frente=listaScan[int(gapTuple[3]/2)-4:int(gapTuple[3]/2)+5]
         if not gapTuple == (0,0,0,0):
-            direc_msg.drive.steering_angle = ((gapTuple[0]-int(gapTuple[3]/2))*0.4/(gapTuple[3]/2))
-
-            if GPArray[int(gapTuple[3]/2)] > 5:
+            if ((gapTuple[0]-int(gapTuple[3]/2)) > 2*int(gapTuple[3]/3)) or ((gapTuple[0]-int(gapTuple[3]/2)) < (0 - 2*int(gapTuple[3]/3))):  
+                direc_msg.drive.steering_angle = ((gapTuple[0]-int(gapTuple[3]/2))*0.4/(gapTuple[3]/2))
+            elif ((gapTuple[0]-int(gapTuple[3]/2)) < int(gapTuple[3]/3)) and ((gapTuple[0]-int(gapTuple[3]/2)) > (0 - int(gapTuple[3]/3))):
+                direc_msg.drive.steering_angle = ((gapTuple[0]-int(gapTuple[3]/2))*0.8/(gapTuple[3]/2))
+            else:
+                direc_msg.drive.steering_angle = ((gapTuple[0]-int(gapTuple[3]/2))*0.6/(gapTuple[3]/2))
+            if min(frente) > 5:
                 direc_msg.drive.speed = 2
             else:
                 direc_msg.drive.speed = 1
-            gap_pub.publish(direc_msg)
+        if min(frente) < 0.7:
+            direc_msg.drive.speed = 0.1
+        gap_pub.publish(direc_msg)
 
 
 #    def shutdown(self):
