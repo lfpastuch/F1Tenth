@@ -44,8 +44,8 @@ def callback(msg):
 
     global gapArray
     #define-se o arco de visão onde estamos procurando os obstáculos, e a menor distância entre o carro e os obstáculos.
-    rangeMax=int(260*1080/360)
-    rangeMin=int(100*1080/360)
+    rangeMax=int(270*1080/360)
+    rangeMin=int(90*1080/360)
 
     #transformar em lista a tupple de valores de msgs.ranges adquiridas do Lidar
 #    t=len(msg.ranges)
@@ -107,16 +107,21 @@ class FollowTheGap(object):
 
 
 
-        rate = rospy.Rate(100)
+        rate = rospy.Rate(40)
 
         while not rospy.is_shutdown():
+            inicio2 = time.time()
             global gapArray
             #print gapArray
             self.GapFollow(gapArray)
             rate.sleep()
-
-
+            fim2 = time.time()
+            print "tempo2 "+str(fim2 - inicio2)
+            print "\n"
+            
     def GapFollow(self, listaScan):
+        
+        inicio = time.time()
 
         minDist = 2.0
         #função para retornar a lista de leituras com as lacunas sendo valores diferentes de zero
@@ -137,9 +142,9 @@ class FollowTheGap(object):
             if ((gapTuple[0]-int(gapTuple[3]/2)) > 2*int(gapTuple[3]/3)) or ((gapTuple[0]-int(gapTuple[3]/2)) < (0 - 2*int(gapTuple[3]/3))):  
                 direc_msg.drive.steering_angle = ((gapTuple[0]-int(gapTuple[3]/2))*0.4/(gapTuple[3]/2))
             elif ((gapTuple[0]-int(gapTuple[3]/2)) < int(gapTuple[3]/3)) and ((gapTuple[0]-int(gapTuple[3]/2)) > (0 - int(gapTuple[3]/3))):
-                direc_msg.drive.steering_angle = ((gapTuple[0]-int(gapTuple[3]/2))*0.8/(gapTuple[3]/2))
-            else:
                 direc_msg.drive.steering_angle = ((gapTuple[0]-int(gapTuple[3]/2))*0.6/(gapTuple[3]/2))
+            else:
+                direc_msg.drive.steering_angle = ((gapTuple[0]-int(gapTuple[3]/2))*0.5/(gapTuple[3]/2))
             if min(frente) > 5:
                 direc_msg.drive.speed = 2
             else:
@@ -148,7 +153,10 @@ class FollowTheGap(object):
             direc_msg.drive.speed = 0.1
         gap_pub.publish(direc_msg)
 
-
+        
+        fim = time.time()
+        print "tempo "+str(fim - inicio)
+        
 #    def shutdown(self):
 #        global direc_msg
 #        rospy.loginfo("Parada")
